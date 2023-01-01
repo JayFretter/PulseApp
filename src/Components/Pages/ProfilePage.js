@@ -1,7 +1,9 @@
 function ProfilePage() {
   return (
-    <div>
-      <p>This is where you will see your profile.</p>
+    <div className="min-h-screen flex flex-col justify-center items-center bg-slate-900 text-4xl text-white">
+      <p>
+       This is where you will be able to view your profile.
+      </p>
     </div>
   );
 }
