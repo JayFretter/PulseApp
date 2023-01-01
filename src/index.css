@@ -1,5 +1,10 @@
 @tailwind base;
 @tailwind components;
+
+.pulse-card {
+  @apply flex flex-col items-center text-3xl;
+}
+
 @tailwind utilities;
 
 body {
@@ -14,4 +19,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.debug {
+  border: 1px solid red;
 }
