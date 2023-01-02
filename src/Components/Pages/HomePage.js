@@ -1,56 +1,27 @@
-import { VictoryPie, VictoryTheme } from "victory";
+import { useState, useEffect } from "react";
+import { VictoryPie } from "victory";
 
 const CHART_HEIGHT = 340;
 
 function HomePage() {
+  const [pulses, setPulses] = useState([]);
+
   const getPulses = () => {
-    return [
-      {
-        id: "63ae112d296309acf79232e1",
-        title: "Are dinosaurs really extinct?",
-        opinions: [
-          {
-            name: "Of course",
-            votes: 81,
-          },
-          {
-            name: "Nope",
-            votes: 8,
-          },
-        ],
-        createdBy: {
-          id: "63ae10c3296309acf79232e0",
-          username: "admin",
-        },
-        createdAtUtc: "2022-12-29T22:14:05.451Z",
-        updatedAtUtc: null,
-      },
-      {
-        id: "63b33681cb4676c7d31e79ab",
-        title: "Which of these podcasters is the best?",
-        opinions: [
-          {
-            name: "Andrew Huberman",
-            votes: 4592,
-          },
-          {
-            name: "Joe Rogan",
-            votes: 10101,
-          },
-          {
-            name: "Mike Thurston",
-            votes: 1377,
-          },
-        ],
-        createdBy: {
-          id: "63b3360ecb4676c7d31e79aa",
-          username: "jay",
-        },
-        createdAtUtc: "2023-01-02T19:54:41.222Z",
-        updatedAtUtc: null,
-      },
-    ];
+    const url = `https://localhost:7159/pulses/all/`;
+    const options = {
+      method: "GET",
+    };
+    fetch(url, options)
+      .then((res) => res.json())
+      .then((data) => setPulses(data.pulses))
+      .catch((err) => console.error(err));
   };
+
+  useEffect(() => {
+    console.log("Getting pulses...");
+
+    getPulses();
+  }, []);
 
   const getPulseChartData = (pulse) => {
     const pieSlices = [];
@@ -68,15 +39,15 @@ function HomePage() {
   const renderPulseContainer = () => {
     return (
       <div className="w-full px-10 flex flex-col lg:flex-row lg:justify-center gap-8 lg:gap-40 text-center text-slate-100">
-        {getPulses().map((pulse) => {
+        {pulses.map((pulse) => {
           return (
-            <div className="pulse-card lg:text-2xl">
+            <div className="pulse-card lg:text-2xl" key={pulse.id}>
               <p className="mt-2">{pulse.title}</p>
               <VictoryPie
                 colorScale="cool"
                 height={CHART_HEIGHT}
                 data={getPulseChartData(pulse)}
-                style={{labels: {fill: "rgb(174,154,252)"}}}
+                style={{ labels: { fill: "rgb(174,154,252)" } }}
               />
             </div>
           );
