@@ -1,4 +1,4 @@
-import { VictoryPie } from "victory";
+import { VictoryPie, VictoryTheme } from "victory";
 
 const CHART_HEIGHT = 340;
 
@@ -68,13 +68,15 @@ function HomePage() {
   const renderPulseContainer = () => {
     return (
       <div className="w-full px-10 flex flex-col lg:flex-row lg:justify-center gap-8 lg:gap-40 text-center text-slate-100">
-        {getPulses().map((pulse, i) => {
+        {getPulses().map((pulse) => {
           return (
             <div className="pulse-card lg:text-2xl">
               <p className="mt-2">{pulse.title}</p>
               <VictoryPie
+                colorScale="cool"
                 height={CHART_HEIGHT}
                 data={getPulseChartData(pulse)}
+                style={{labels: {fill: "rgb(174,154,252)"}}}
               />
             </div>
           );
