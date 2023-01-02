@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { VictoryPie } from "victory";
+import { VictoryPie, VictoryPortal, VictoryLabel } from "victory";
 
 const CHART_HEIGHT = 340;
 
@@ -38,7 +38,7 @@ function HomePage() {
 
   const renderPulseContainer = () => {
     return (
-      <div className="w-full px-10 flex flex-col lg:flex-row lg:justify-center gap-8 lg:gap-40 text-center text-slate-100">
+      <div className="w-full flex-wrap px-10 flex flex-col items-center lg:flex-row lg:justify-center gap-8 lg:gap-40 text-center text-slate-100">
         {pulses.map((pulse) => {
           return (
             <div className="pulse-card lg:text-2xl" key={pulse.id}>
@@ -48,6 +48,7 @@ function HomePage() {
                 height={CHART_HEIGHT}
                 data={getPulseChartData(pulse)}
                 style={{ labels: { fill: "rgb(174,154,252)" } }}
+                labelComponent={<VictoryPortal><VictoryLabel/></VictoryPortal>}
               />
             </div>
           );

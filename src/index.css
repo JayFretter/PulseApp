@@ -2,7 +2,7 @@
 @tailwind components;
 
 .pulse-card {
-  @apply flex flex-col items-center text-3xl;
+  @apply flex flex-col items-center text-3xl max-w-[400px];
 }
 
 @tailwind utilities;
