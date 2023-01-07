@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { VictoryPie, VictoryPortal, VictoryLabel } from "victory";
+import { FaFireAlt } from 'react-icons/fa';
+import { AiFillFire } from 'react-icons/ai';
 
 const CHART_HEIGHT = 340;
 
@@ -42,12 +44,12 @@ function HomePage() {
         {pulses.map((pulse) => {
           return (
             <div className="pulse-card lg:text-2xl" key={pulse.id}>
-              <p className="mt-2">{pulse.title}</p>
+              <p className="mt-2 mb-4">{pulse.title}</p>
               <VictoryPie
-                colorScale="cool"
+                colorScale="warm"
                 height={CHART_HEIGHT}
                 data={getPulseChartData(pulse)}
-                style={{ labels: { fill: "rgb(174,154,252)" } }}
+                style={{ labels: { fill: "white" } }}
                 labelComponent={<VictoryPortal><VictoryLabel/></VictoryPortal>}
               />
             </div>
@@ -58,11 +60,11 @@ function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-slate-900 text-white">
-      <p className="mt-8 mb-2 text-4xl">Welcome to Pulse.</p>
-      <p className="text-lg font-light mb-12">
+    <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white">
+      <p className="mt-8 mb-12 text-3xl">Hot Topics <AiFillFire className="inline text-red-500" /></p>
+      {/* <p className="text-lg font-light mb-12">
         Check out todays trending topics:
-      </p>
+      </p> */}
       {renderPulseContainer()}
     </div>
   );

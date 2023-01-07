@@ -24,9 +24,9 @@ function Navbar() {
   }
 
   return (
-    <div className="flex items-center justify-between px-8 h-[60px] bg-purple-800 text-white">
+    <div className="flex items-center justify-between px-8 h-[60px] bg-gradient-to-r from-blue-800 to-purple-900 text-white">
       <Link to={`/`} className="font-semibold text-3xl tracking-wide hover:cursor-pointer">pulse.</Link>
-      <input type="text" placeholder="Search for a pulse..." className="max-w-[80%] min-w-[220px] h-[50%] rounded-lg bg-purple-200 p-2 text-black" />
+      <input type="text" placeholder="Find pulses..." className="max-w-[80%] min-w-[220px] border-b-2 border-sky-400 bg-black/30 px-4 py-1 text-white" />
       {getNavbarLinks()}
     </div>
   );
