@@ -9,7 +9,7 @@ function HomePage() {
   const [pulses, setPulses] = useState([]);
 
   const getPulses = () => {
-    const url = `https://localhost:7159/pulses/all/`;
+    const url = `${process.env.REACT_APP_API_BASE_URL}/pulses/all/`;
     const options = {
       method: "GET",
     };
