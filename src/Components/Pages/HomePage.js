@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { VictoryPie, VictoryPortal, VictoryLabel } from "victory";
-import { FaFireAlt } from 'react-icons/fa';
-import { AiFillFire } from 'react-icons/ai';
+import { FaFireAlt } from "react-icons/fa";
+import { AiFillFire } from "react-icons/ai";
 
 const CHART_HEIGHT = 340;
 
@@ -28,9 +28,14 @@ function HomePage() {
   const getPulseChartData = (pulse) => {
     const pieSlices = [];
 
+    let totalVotes = 0;
+    pulse.opinions.forEach((o) => {
+      totalVotes += o.votes;
+    });
+
     pulse.opinions.forEach((o) => {
       pieSlices.push({
-        x: o.name,
+        x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(1)}%)`,
         y: o.votes,
       });
     });
@@ -50,8 +55,15 @@ function HomePage() {
                 height={CHART_HEIGHT}
                 data={getPulseChartData(pulse)}
                 style={{ labels: { fill: "white" } }}
-                labelComponent={<VictoryPortal><VictoryLabel/></VictoryPortal>}
+                labelComponent={
+                  <VictoryPortal>
+                    <VictoryLabel />
+                  </VictoryPortal>
+                }
               />
+              <button className="border-2 border-red-600 rounded-xl text-lg px-4 py-2 hover:bg-red-900 transition-colors">
+                Go to discussion
+              </button>
             </div>
           );
         })}
@@ -61,7 +73,9 @@ function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white">
-      <p className="mt-8 mb-12 text-3xl">Hot Topics <AiFillFire className="inline text-red-500" /></p>
+      <p className="mt-8 mb-12 text-3xl">
+        Hot Pulses <AiFillFire className="inline text-red-500" />
+      </p>
       {/* <p className="text-lg font-light mb-12">
         Check out todays trending topics:
       </p> */}
