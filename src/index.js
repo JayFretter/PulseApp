@@ -11,6 +11,7 @@ import LoginPage from './Components/Pages/LoginPage';
 import ProfilePage from './Components/Pages/ProfilePage';
 import ErrorPage from './ErrorPage';
 import reportWebVitals from './reportWebVitals';
+import DiscussionPage, { loader as discussionPageLoader } from './Components/Pages/DiscussionPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,11 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />
+      },
+      {
+        path: "/discussion/:pulseId",
+        element: <DiscussionPage />,
+        loader: discussionPageLoader
       }
     ]
   }

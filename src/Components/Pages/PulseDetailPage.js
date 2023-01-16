@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { VictoryPie, VictoryPortal, VictoryLabel } from "victory";
 import { AiFillFire } from "react-icons/ai";
-import { Link } from "react-router-dom";
 
 const CHART_HEIGHT = 340;
 
-function HomePage() {
+function PulseDetailPage() {
   const [pulses, setPulses] = useState([]);
 
   const getPulses = () => {
@@ -20,6 +19,8 @@ function HomePage() {
   };
 
   useEffect(() => {
+    console.log("Getting pulses...");
+
     getPulses();
   }, []);
 
@@ -59,11 +60,9 @@ function HomePage() {
                   </VictoryPortal>
                 }
               />
-              <Link to={`discussion/${pulse.id}`}>
-                <button className="border-2 border-red-600 rounded-xl text-lg px-4 py-2 hover:bg-red-900 transition-colors">
-                  Go to discussion
-                </button>
-              </Link>
+              <button className="border-2 border-red-600 rounded-xl text-lg px-4 py-2 hover:bg-red-900 transition-colors">
+                Go to discussion
+              </button>
             </div>
           );
         })}
@@ -84,4 +83,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default PulseDetailPage;
