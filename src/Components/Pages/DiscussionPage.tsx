@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 import { isEmpty } from "../../Helpers/Helpers";
 import { Pulse } from "../../Models/Pulse";
+import DiscussionSection from "../Other/DiscussionSection";
 import PulseDetails from "../Other/PulseDetails";
 
 interface DiscussionLoaderParams {
@@ -54,8 +55,9 @@ function DiscussionPage() {
   const renderPulseContainer = (pulseData: Pulse) => {
     if (!isEmpty(pulseData)) {
       return (
-        <div className="w-full flex-wrap px-10 flex flex-col items-center lg:flex-row lg:justify-center gap-8 lg:gap-40 text-center text-slate-100">
+        <div className="w-full flex-wrap px-10 py-10 flex flex-col items-center lg:flex-row lg:justify-center gap-8 lg:gap-4 text-center text-slate-100">
           <PulseDetails pulse={pulseData} />
+          <DiscussionSection pulse={pulseData}/>
         </div>
       );
     }
@@ -64,7 +66,6 @@ function DiscussionPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white">
-      <p>{pulse.id}</p>
       {renderPulseContainer(pulse)}
     </div>
   );
