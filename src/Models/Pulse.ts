@@ -1,9 +1,9 @@
-interface PulseOpinion {
+export interface PulseOpinion {
   name: string,
   votes: number
 }
 
-interface PulseCreatedBy {
+export interface PulseCreatedBy {
   id: string,
   username: string
 }
