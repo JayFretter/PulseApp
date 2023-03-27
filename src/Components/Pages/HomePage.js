@@ -72,7 +72,7 @@ function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white">
+    <div className="min-h-screen flex flex-col items-center text-white">
       <p className="mt-8 mb-12 text-3xl">
         Hot Pulses <AiFillFire className="inline text-red-500" />
       </p>

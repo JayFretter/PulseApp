@@ -3,7 +3,7 @@ import Navbar from "./Components/Shared/Navbar";
 
 function Root() {
   return (
-    <div>
+    <div className="bg-gray-900">
       <Navbar />
       <Outlet />
     </div>
