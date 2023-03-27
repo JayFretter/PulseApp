@@ -55,7 +55,7 @@ function DiscussionPage() {
   const renderPulseContainer = (pulseData: Pulse) => {
     if (!isEmpty(pulseData)) {
       return (
-        <div className="w-full flex-wrap px-10 py-10 flex flex-col items-center lg:flex-row lg:justify-center gap-8 lg:gap-4 text-center text-slate-100">
+        <div className="w-full flex-wrap lg:px-10 py-10 flex flex-col items-center lg:flex-row lg:justify-center gap-8 lg:gap-4 text-center text-slate-100">
           <PulseDetails pulse={pulseData} />
           <DiscussionSection pulse={pulseData}/>
         </div>

@@ -86,14 +86,14 @@ function DiscussionSection(props: DiscussionSectionProps) {
     const relevantThread = discussionData.opinionThreads.filter(
       (thread) => thread.threadOpinionName === getSelectedOpinion()
     )[0];
-    if (!relevantThread) return;
+    if (!relevantThread) return <p>Pick an answer to see people's arguments</p>;
 
     const relevantComments = relevantThread.discussionComments;
     return (
-      <div>
+      <div className="bg-gray-900 p-4 rounded-lg flex flex-col gap-4">
         {relevantComments.map((comment, i) => {
           return (
-            <DiscussionComment comment={comment}/>
+            <DiscussionComment comment={comment} key={i}/>
           );
         })}
       </div>
@@ -106,12 +106,11 @@ function DiscussionSection(props: DiscussionSectionProps) {
   }, [props.pulse]);
 
   return (
-    <div className="bg-gray-800 p-8 w-full">
+    <div className="bg-gray-800 p-2 lg:p-8 w-full">
       <p className="mb-4 text-2xl">Discussion</p>
       <p className="mb-4">Show argments for:</p>
       {renderOpinionFilterButtons()}
-      <p className="mb-4">Comments:</p>
-      <div className="bg-gray-900 p-4">{renderDiscussion()}</div>
+      {renderDiscussion()}
     </div>
   );
 }
