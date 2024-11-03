@@ -8,8 +8,14 @@ interface DiscussionSectionProps {
   pulse: Pulse;
 }
 
+interface OpinionButtonData {
+  opinionName: string,
+  selected: boolean,
+  colour: string,
+}
+
 function DiscussionSection(props: DiscussionSectionProps) {
-  const [opinionButtonData, setOpinionButtonData] = useState<any[]>([]);
+  const [opinionButtonData, setOpinionButtonData] = useState<OpinionButtonData[]>([]);
   const [discussionData, setDiscussionData] = useState<Discussion>(
     {} as Discussion
   );
@@ -26,12 +32,12 @@ function DiscussionSection(props: DiscussionSectionProps) {
   };
 
   const setOpinionButtonsData = (opinions: PulseOpinion[]) => {
-    const data: any[] = [];
+    const data: OpinionButtonData[] = [];
     opinions.forEach((op) => {
       data.push({
         opinionName: op.name,
         selected: false,
-        color: op.color,
+        colour: op.hexColour,
       });
     });
 
@@ -70,7 +76,7 @@ function DiscussionSection(props: DiscussionSectionProps) {
               onClick={() =>
                 selectOpinionFilterButton(opinionButton.opinionName)
               }
-              style={{backgroundColor: opinionButton.selected ? opinionButton.color : "#1a202c"}}
+              style={{backgroundColor: opinionButton.selected ? `#${opinionButton.colour}` : "#1a202c"}}
             >
               <p>{opinionButton.opinionName}</p>
             </button>
@@ -93,7 +99,7 @@ function DiscussionSection(props: DiscussionSectionProps) {
       <div className="bg-gray-900 p-4 rounded-lg flex flex-col gap-4">
         {relevantComments.map((comment, i) => {
           return (
-            <DiscussionCommentBlock comment={comment} key={i}/>
+            <DiscussionCommentBlock comment={comment} pulseOpinions={props.pulse.opinions} key={i}/>
           );
         })}
       </div>

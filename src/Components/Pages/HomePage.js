@@ -38,6 +38,7 @@ function HomePage() {
       pieSlices.push({
         x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(0)}%)`,
         y: o.votes,
+        colour: `#${o.hexColour}`
       });
     });
 
@@ -55,7 +56,7 @@ function HomePage() {
                 colorScale="warm"
                 height={CHART_HEIGHT}
                 data={getPulseChartData(pulse)}
-                style={{ labels: { fill: "white" } }}
+                style={{ labels: { fill: "white" }, data: {fill: d => d.datum.colour} }}
                 labelComponent={
                   <VictoryPortal>
                     <VictoryLabel />

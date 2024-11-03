@@ -26,6 +26,7 @@ function PulseDetails(props: PulseDetailProps) {
       pieSlices.push({
         x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(0)}%)`,
         y: o.votes,
+        colour: `#${o.hexColour}`,
       });
     });
 
@@ -55,10 +56,9 @@ function PulseDetails(props: PulseDetailProps) {
       <p className="text-xl mb-4">{props.pulse.title}</p>
       <div className="mx-auto max-w-[500px]">
         <VictoryPie
-          colorScale="cool"
           height={CHART_HEIGHT}
           data={pulseChartData}
-          style={{ labels: { fill: "white", fontSize: 12 } }}
+          style={{ labels: { fill: "white", fontSize: 12 }, data: { fill: (d) => d.datum.colour }}}
           labelComponent={
             <VictoryPortal>
               <VictoryLabel />
