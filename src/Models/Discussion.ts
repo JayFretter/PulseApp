@@ -1,19 +1,20 @@
 export interface Discussion {
-  pulseId: string;
   opinionThreads: OpinionThread[];
 }
 
 export interface OpinionThread {
-  threadOpinionName: string;
+  opinionName: string;
   discussionComments: DiscussionComment[];
 }
 
 export interface DiscussionComment {
   userId: string;
-  userName: string;
+  username: string;
   parent: DiscussionComment;
-  children: DiscussionComment[];
   opinionName: string;
-  opinionBody: string;
+  commentBody: string;
   pulseId: string;
+  upvotes: number;
+  downvotes: number;
+  children: DiscussionComment[];
 }

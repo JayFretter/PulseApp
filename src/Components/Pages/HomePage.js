@@ -15,7 +15,10 @@ function HomePage() {
     };
     fetch(url, options)
       .then((res) => res.json())
-      .then((data) => setPulses(data))
+      .then((data) => {
+        console.log(data);
+        setPulses(data);
+      })
       .catch((err) => console.error(err));
   };
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { isEmpty } from "../../Helpers/Helpers";
 import { Discussion } from "../../Models/Discussion";
 import { Pulse, PulseOpinion } from "../../Models/Pulse";
-import DiscussionComment from "./DiscussionComment";
+import DiscussionCommentBlock from "./DiscussionCommentBlock";
 
 interface DiscussionSectionProps {
   pulse: Pulse;
@@ -31,6 +31,7 @@ function DiscussionSection(props: DiscussionSectionProps) {
       data.push({
         opinionName: op.name,
         selected: false,
+        color: op.color,
       });
     });
 
@@ -64,13 +65,12 @@ function DiscussionSection(props: DiscussionSectionProps) {
         {opinionButtonData.map((opinionButton) => {
           return (
             <button
-              className={`w-full py-2 lg:text-2xl rounded-lg transition-colors ${
-                opinionButton.selected ? "bg-green-600" : "bg-gray-900"
-              }`}
+              className={`w-full py-2 lg:text-2xl rounded-lg transition-colors`}
               key={opinionButton.opinionName}
               onClick={() =>
                 selectOpinionFilterButton(opinionButton.opinionName)
               }
+              style={{backgroundColor: opinionButton.selected ? opinionButton.color : "#1a202c"}}
             >
               <p>{opinionButton.opinionName}</p>
             </button>
@@ -84,7 +84,7 @@ function DiscussionSection(props: DiscussionSectionProps) {
     if (isEmpty(discussionData)) return;
 
     const relevantThread = discussionData.opinionThreads.filter(
-      (thread) => thread.threadOpinionName === getSelectedOpinion()
+      (thread) => thread.opinionName === getSelectedOpinion()
     )[0];
     if (!relevantThread) return <p>Pick an answer to see people's arguments</p>;
 
@@ -93,7 +93,7 @@ function DiscussionSection(props: DiscussionSectionProps) {
       <div className="bg-gray-900 p-4 rounded-lg flex flex-col gap-4">
         {relevantComments.map((comment, i) => {
           return (
-            <DiscussionComment comment={comment} key={i}/>
+            <DiscussionCommentBlock comment={comment} key={i}/>
           );
         })}
       </div>
