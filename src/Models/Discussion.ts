@@ -8,6 +8,7 @@ export interface OpinionThread {
 }
 
 export interface DiscussionComment {
+  id: string;
   userId: string;
   username: string;
   parent: DiscussionComment;

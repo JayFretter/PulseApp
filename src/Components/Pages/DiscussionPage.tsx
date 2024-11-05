@@ -5,10 +5,6 @@ import { Pulse } from "../../Models/Pulse";
 import DiscussionSection from "../Other/DiscussionSection";
 import PulseDetails from "../Other/PulseDetails";
 
-interface DiscussionLoaderParams {
-  params: any
-}
-
 export async function loader(x: any) {
   return x.params.pulseId;
 }
