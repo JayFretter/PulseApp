@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { isEmpty } from "../../Helpers/Helpers";
-import { Discussion } from "../../Models/Discussion";
-import { Pulse, PulseOpinion } from "../../Models/Pulse";
+import { DiscussionComment } from "../../Models/Discussion";
+import { Pulse } from "../../Models/Pulse";
 import DiscussionCommentBlock from "./DiscussionCommentBlock";
+import AddCommentForm from "./AddCommentForm";
+import { useCookies } from "react-cookie";
 
 interface DiscussionSectionProps {
   pulse: Pulse;
@@ -16,24 +18,27 @@ interface OpinionButtonData {
 
 function DiscussionSection(props: DiscussionSectionProps) {
   const [opinionButtonData, setOpinionButtonData] = useState<OpinionButtonData[]>([]);
-  const [discussionData, setDiscussionData] = useState<Discussion>(
-    {} as Discussion
-  );
+  const [opinions, setOpinions] = useState<DiscussionComment[]>([]);
+  const [cookies] = useCookies(["token"]);
 
-  const getDiscussionData = (pulseId: string) => {
-    const url = `${process.env.REACT_APP_API_BASE_URL}/discussions?pulseId=${pulseId}`;
+  const isLoggedIn = () : boolean => {
+    return cookies.token ? true : false;
+  }
+
+  const getDiscussionData = () => {
+    const url = `${process.env.REACT_APP_API_BASE_URL}/discussions?pulseId=${props.pulse.id}`;
     const options = {
       method: "GET",
     };
     fetch(url, options)
       .then((res) => res.json())
-      .then((data) => setDiscussionData(data))
+      .then((data) => setOpinions(data))
       .catch((err) => console.error(err));
   };
 
-  const setOpinionButtonsData = (opinions: PulseOpinion[]) => {
+  const setOpinionButtonsData = () => {
     const data: OpinionButtonData[] = [];
-    opinions.forEach((op) => {
+    props.pulse.opinions.forEach((op) => {
       data.push({
         opinionName: op.name,
         selected: false,
@@ -87,17 +92,11 @@ function DiscussionSection(props: DiscussionSectionProps) {
   };
 
   const renderDiscussion = () => {
-    if (isEmpty(discussionData)) return;
+    if (isEmpty(opinions)) return;
 
-    const relevantThread = discussionData.opinionThreads.filter(
-      (thread) => thread.opinionName === getSelectedOpinion()
-    )[0];
-    if (!relevantThread) return <p>Pick an answer to see people's arguments</p>;
-
-    const relevantComments = relevantThread.discussionComments;
     return (
       <div className="bg-gray-900 p-4 rounded-lg flex flex-col gap-4">
-        {relevantComments.map((comment, i) => {
+        {opinions.map((comment, i) => {
           return (
             <DiscussionCommentBlock comment={comment} pulseOpinions={props.pulse.opinions} key={i}/>
           );
@@ -107,15 +106,16 @@ function DiscussionSection(props: DiscussionSectionProps) {
   };
 
   useEffect(() => {
-    getDiscussionData(props.pulse.id);
-    setOpinionButtonsData(props.pulse.opinions);
-  }, [props.pulse]);
+    getDiscussionData();
+    setOpinionButtonsData();
+  }, []);
 
   return (
     <div className="bg-gray-800 p-2 lg:p-8 w-full">
       <p className="mb-4 text-2xl">Discussion</p>
-      <p className="mb-4">Show argments for:</p>
-      {renderOpinionFilterButtons()}
+      {
+        isLoggedIn() ? <AddCommentForm pulse={props.pulse} parentCommentId={null} reloadDiscussionData={getDiscussionData} /> : <></>
+      }
       {renderDiscussion()}
     </div>
   );

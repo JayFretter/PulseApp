@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { VictoryPie, VictoryPortal, VictoryLabel } from "victory";
 import { AiFillFire } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Pulse } from "../../Models/Pulse";
 
 const CHART_HEIGHT = 340;
 
-function HomePage() {
-  const [pulses, setPulses] = useState([]);
+function PulseDetailPage() {
+  const [pulses, setPulses] = useState<Pulse[]>([]);
 
   const getPulses = () => {
     const url = `${process.env.REACT_APP_API_BASE_URL}/pulses/all/`;
@@ -15,19 +15,18 @@ function HomePage() {
     };
     fetch(url, options)
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setPulses(data);
-      })
+      .then((data) => setPulses(data.pulses))
       .catch((err) => console.error(err));
   };
 
   useEffect(() => {
+    console.log("Getting pulses...");
+
     getPulses();
   }, []);
 
-  const getPulseChartData = (pulse) => {
-    const pieSlices = [];
+  const getPulseChartData = (pulse: Pulse) => {
+    const pieSlices: any[] = [];
 
     let totalVotes = 0;
     pulse.opinions.forEach((o) => {
@@ -63,11 +62,9 @@ function HomePage() {
                   </VictoryPortal>
                 }
               />
-              <Link to={`discussion/${pulse.id}`}>
-                <button className="border-2 border-red-600 rounded-xl text-lg px-4 py-2 hover:bg-red-900 transition-colors">
-                  Go to discussion
-                </button>
-              </Link>
+              <button className="border-2 border-red-600 rounded-xl text-lg px-4 py-2 hover:bg-red-900 transition-colors">
+                Go to discussion
+              </button>
             </div>
           );
         })}
@@ -76,16 +73,13 @@ function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center text-white">
+    <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white">
       <p className="mt-8 mb-12 text-3xl">
         Hot Pulses <AiFillFire className="inline text-red-500" />
       </p>
-      {/* <p className="text-lg font-light mb-12">
-        Check out todays trending topics:
-      </p> */}
       {renderPulseContainer()}
     </div>
   );
 }
 
-export default HomePage;
+export default PulseDetailPage;
