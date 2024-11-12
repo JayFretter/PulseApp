@@ -38,14 +38,6 @@ function PulseDetails(props: PulseDetailProps) {
     getPulseChartData(props.pulse);
   }, [props.pulse]);
 
-  // const getLabelFontSize = () => {
-  //   console.log(window.innerWidth);
-
-  //   if (window.innerWidth > 1000) return 6;
-  //   if (window.innerWidth < 800) return 12;
-  //   return 8;
-  // };
-
   return (
     <div className="bg-gray-800 p-8 w-full">
       <p className="text-md">
@@ -58,7 +50,7 @@ function PulseDetails(props: PulseDetailProps) {
         <VictoryPie
           height={CHART_HEIGHT}
           data={pulseChartData}
-          style={{ labels: { fill: "white", fontSize: 12 }, data: { fill: (d) => d.datum.colour }}}
+          style={{ labels: { fill: "white", fontSize: 12 }, data: { fill: (d) => d.datum.colour, stroke: 'white', strokeWidth: 2}}}
           labelComponent={
             <VictoryPortal>
               <VictoryLabel />

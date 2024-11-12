@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CookiesProvider, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
@@ -18,7 +18,7 @@ function LoginPage() {
     const url = `${process.env.REACT_APP_API_BASE_URL}/users/login`;
     const options = {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify(body),
@@ -36,7 +36,7 @@ function LoginPage() {
   };
 
   const setToken = (token: string) => {
-    setCookie("token", token, { path: '/' });
+    setCookie("token", token, { path: "/" });
     navigate("/");
   };
 
@@ -50,41 +50,39 @@ function LoginPage() {
   };
 
   return (
-    <CookiesProvider>
-      <div className="min-h-screen flex flex-col justify-center items-center bg-slate-900 text-4xl text-black">
-        <div>
-          <form
-            className="flex flex-col gap-8 bg-slate-200 p-12 rounded-xl"
-            onSubmit={sendLogin}
+    <div className="min-h-screen flex flex-col justify-center items-center bg-slate-900 text-4xl text-black">
+      <div>
+        <form
+          className="flex flex-col gap-8 bg-slate-200 p-12 rounded-xl"
+          onSubmit={sendLogin}
+        >
+          <p className="text-4xl">Log in</p>
+          <p className="text-xl text-slate-600">
+            Log into your account to vote on other people's Pulses and create
+            your own.
+          </p>
+          <input
+            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
+            type="text"
+            placeholder="Username"
+            name="username"
+          />
+          <input
+            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
+            type="password"
+            placeholder="Password"
+            name="password"
+          />
+          <button
+            className="bg-green-500 hover:bg-green-600 transition-colors text-white text-2xl rounded-full py-2"
+            type="submit"
           >
-            <p className="text-4xl">Log in</p>
-            <p className="text-xl text-slate-600">
-              Log into your account to vote on other people's Pulses and create
-              your own.
-            </p>
-            <input
-              className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
-              type="text"
-              placeholder="Username"
-              name="username"
-            />
-            <input
-              className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
-              type="password"
-              placeholder="Password"
-              name="password"
-            />
-            <button
-              className="bg-green-500 hover:bg-green-600 transition-colors text-white text-2xl rounded-full py-2"
-              type="submit"
-            >
-              Log in
-            </button>
-            {renderErrorText()}
-          </form>
-        </div>
+            Log in
+          </button>
+          {renderErrorText()}
+        </form>
       </div>
-    </CookiesProvider>
+    </div>
   );
 }
 

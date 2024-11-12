@@ -4,7 +4,7 @@ import {
   BsFillArrowDownCircleFill,
 } from "react-icons/bs";
 import { PulseOpinion } from "../../Models/Pulse";
-import { CookiesProvider, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import { useState } from "react";
 
 interface DiscussionCommentProps {

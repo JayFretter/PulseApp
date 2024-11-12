@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { VictoryPie, VictoryPortal, VictoryLabel } from "victory";
 import { AiFillFire } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Pulse } from "../../Models/Pulse";
+import { useUserCredentials } from "../../Hooks/useUserCredentials";
 
 const CHART_HEIGHT = 340;
 
 function HomePage() {
   const [pulses, setPulses] = useState<Pulse[]>([]);
+  const [isLoggedIn, getUserCredentials] = useUserCredentials();
+  const navigate = useNavigate();
 
   const getPulses = () => {
     const url = `${process.env.REACT_APP_API_BASE_URL}/pulses/all/`;
@@ -46,6 +49,18 @@ function HomePage() {
     return pieSlices;
   };
 
+  const onCreateButtonClicked = () =>
+  {
+    navigate('pulses/new');
+  }
+
+  const renderCreateButton = () => {
+    if (isLoggedIn())
+    {
+      return <button className="bg-blue-700 hover:bg-blue-900 px-2 py-1 rounded-lg" onClick={onCreateButtonClicked}>+ New Pulse</button>
+    }
+  }
+
   const renderPulseContainer = () => {
     return (
       <div className="w-full flex-wrap px-10 flex flex-col items-center lg:flex-row lg:justify-center gap-8 lg:gap-40 text-center text-slate-100">
@@ -57,7 +72,7 @@ function HomePage() {
                 colorScale="warm"
                 height={CHART_HEIGHT}
                 data={getPulseChartData(pulse)}
-                style={{ labels: { fill: "white" }, data: {fill: d => d.datum.colour} }}
+                style={{ labels: { fill: "white" }, data: {fill: d => d.datum.colour, stroke: 'white', strokeWidth: 2} }}
                 labelComponent={
                   <VictoryPortal>
                     <VictoryLabel />
@@ -78,6 +93,7 @@ function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center text-white">
+      {renderCreateButton()}
       <p className="mt-8 mb-12 text-3xl">
         Hot Pulses <AiFillFire className="inline text-red-500" />
       </p>
