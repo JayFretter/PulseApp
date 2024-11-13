@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useColourGenerator } from "../../Hooks/useColourGenerator";
 import { usePostNewPulse } from "../../Hooks/usePostNewPulse";
 import { PostNewPulseBody } from "../../Models/PostNewPulseBody";
@@ -12,9 +12,27 @@ function CreatePulsePage() {
   const [selectableAnswers, setSelectableAnswers] = useState<
     PulseSelectableAnswer[]
   >([]);
-  const [formIsInvalid, setFormIsInvalid] = useState<boolean>(false);
+  const [pulseTitle, setPulseTitle] = useState<string>("");
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const generateColour = useColourGenerator();
   const postNewPulse = usePostNewPulse();
+
+  const setErrors = () => {
+    const errors: string[] = [];
+
+    if (pulseTitle == '')
+      errors.push('Title cannot be empty');
+    if (selectableAnswers.length < 2)
+      errors.push('You must have at least two possible answers');
+    if (!selectableAnswers.every((a) => a.name !== ""))
+      errors.push('All possible answers must have a name');
+
+    setValidationErrors(errors);
+  };
+
+  useEffect(() => {
+    setErrors();
+  }, [pulseTitle, selectableAnswers]);
 
   const createNewPulse = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +57,10 @@ function CreatePulsePage() {
     };
 
     setSelectableAnswers([...selectableAnswers, newAnswer]);
+  };
+
+  const handlePulseTitleChange = (e: any) => {
+    setPulseTitle(e.target.value);
   };
 
   const handleSelectableAnswerChange = (e: any, i: number) => {
@@ -103,10 +125,38 @@ function CreatePulsePage() {
   };
 
   const renderErrorText = () => {
-    if (formIsInvalid)
+    if (validationErrors.length > 0)
       return (
-        <p className="text-xl text-red-600">Pulse definition is invalid.</p>
+        <div className="text-base text-red-600">
+          <p className="">Cannot submit Pulse. Reason(s):</p>
+          <ul className="list-disc pl-5">
+            {validationErrors.map(e => <li>{e}</li>)}
+          </ul>
+        </div>
       );
+  };
+
+  const renderSubmitButton = () => {
+    if (validationErrors.length === 0) {
+      return (
+        <button
+          className="bg-green-500 hover:bg-green-600 transition-colors text-white text-2xl rounded-full py-2"
+          type="submit"
+        >
+          Create
+        </button>
+      );
+    } else {
+      return (
+        <button
+          className="bg-gray-500 text-white text-2xl rounded-full py-2"
+          type="submit"
+          disabled
+        >
+          Create
+        </button>
+      );
+    }
   };
 
   return (
@@ -125,22 +175,18 @@ function CreatePulsePage() {
             type="text"
             placeholder="Title"
             name="title"
+            onChange={handlePulseTitleChange}
           />
           <p className="text-xl text-slate-600">Possible answers:</p>
           {renderSelectableAnswers()}
           <button
-            className="text-black text-base font-semibold px-2 self-start mb-4"
+            className="text-slate-600 text-base font-semibold px-2 self-start mb-4"
             type="button"
             onClick={addSelectableAnswer}
           >
             + Add Answer
           </button>
-          <button
-            className="bg-green-500 hover:bg-green-600 transition-colors text-white text-2xl rounded-full py-2"
-            type="submit"
-          >
-            Create
-          </button>
+          {renderSubmitButton()}
           {renderErrorText()}
         </form>
       </div>

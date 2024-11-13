@@ -2,12 +2,12 @@ import { useCookies } from "react-cookie";
 import { PostOpinionBody } from "../Models/PostOpinionBody";
 import { useNavigate } from "react-router-dom";
 
-export function usePostDiscussionOpinion() {
+export function usePostDiscussionArgument() {
   const [cookies, _, removeCookie] = useCookies(["token"]);
   const navigate = useNavigate();
 
-  const postOpinion = async (body: PostOpinionBody) : Promise<boolean> => {
-    const url = `${process.env.REACT_APP_API_BASE_URL}/discussions/add-comment`;
+  const postArgument = async (body: PostOpinionBody) : Promise<boolean> => {
+    const url = `${process.env.REACT_APP_API_BASE_URL}/discussions/arguments`;
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -30,5 +30,5 @@ export function usePostDiscussionOpinion() {
     return false;
   }
 
-  return postOpinion;
+  return postArgument;
 }

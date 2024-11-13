@@ -4,18 +4,18 @@ export interface Discussion {
 
 export interface OpinionThread {
   opinionName: string;
-  discussionComments: DiscussionComment[];
+  discussionArguments: DiscussionArgument[];
 }
 
-export interface DiscussionComment {
+export interface DiscussionArgument {
   id: string;
   userId: string;
   username: string;
-  parent: DiscussionComment;
+  parent: DiscussionArgument;
   opinionName: string;
-  commentBody: string;
+  argumentBody: string;
   pulseId: string;
   upvotes: number;
   downvotes: number;
-  children: DiscussionComment[];
+  children: DiscussionArgument[];
 }

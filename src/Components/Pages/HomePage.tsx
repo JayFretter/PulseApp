@@ -4,6 +4,7 @@ import { AiFillFire } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { Pulse } from "../../Models/Pulse";
 import { useUserCredentials } from "../../Hooks/useUserCredentials";
+import { useVoteColourGenerator } from "../../Hooks/useVoteColourGenerator";
 
 const CHART_HEIGHT = 340;
 
@@ -11,6 +12,7 @@ function HomePage() {
   const [pulses, setPulses] = useState<Pulse[]>([]);
   const [isLoggedIn, getUserCredentials] = useUserCredentials();
   const navigate = useNavigate();
+  const generateColoursForVotes = useVoteColourGenerator();
 
   const getPulses = () => {
     const url = `${process.env.REACT_APP_API_BASE_URL}/pulses/all/`;
@@ -38,11 +40,17 @@ function HomePage() {
       totalVotes += o.votes;
     });
 
-    pulse.opinions.forEach((o) => {
+    let colours = generateColoursForVotes(pulse.opinions.length);
+    console.log('colours for pulse ' + pulse.title);
+    console.log(colours);
+
+    pulse.opinions.sort((a, b) => a.votes - b.votes);
+
+    pulse.opinions.forEach((o, i) => {
       pieSlices.push({
         x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(0)}%)`,
         y: o.votes,
-        colour: `#${o.hexColour}`
+        colour: `#${colours[i]}`
       });
     });
 
@@ -55,9 +63,8 @@ function HomePage() {
   }
 
   const renderCreateButton = () => {
-    if (isLoggedIn())
-    {
-      return <button className="bg-blue-700 hover:bg-blue-900 px-2 py-1 rounded-lg" onClick={onCreateButtonClicked}>+ New Pulse</button>
+    if (isLoggedIn()) {
+      return <button className="bg-blue-700 hover:bg-blue-900 px-4 py-2 rounded-lg text-xl" onClick={onCreateButtonClicked}>Create a Pulse</button>
     }
   }
 
@@ -80,7 +87,7 @@ function HomePage() {
                 }
               />
               <Link to={`discussion/${pulse.id}`}>
-                <button className="border-2 border-red-600 rounded-xl text-lg px-4 py-2 hover:bg-red-900 transition-colors">
+                <button className="border-2 border-blue-700 rounded-xl text-lg px-4 py-2 hover:bg-blue-900 transition-colors">
                   Go to discussion
                 </button>
               </Link>
@@ -94,12 +101,9 @@ function HomePage() {
   return (
     <div className="min-h-screen flex flex-col items-center text-white">
       {renderCreateButton()}
-      <p className="mt-8 mb-12 text-3xl">
-        Hot Pulses <AiFillFire className="inline text-red-500" />
+      <p className="mt-12 mb-12 text-3xl">
+        Hot Pulses <AiFillFire className="inline text-red-500 pb-1" />
       </p>
-      {/* <p className="text-lg font-light mb-12">
-        Check out todays trending topics:
-      </p> */}
       {renderPulseContainer()}
     </div>
   );

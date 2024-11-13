@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { isEmpty } from "../../Helpers/Helpers";
-import { DiscussionComment } from "../../Models/Discussion";
+import { DiscussionArgument } from "../../Models/Discussion";
 import { Pulse } from "../../Models/Pulse";
-import DiscussionCommentBlock from "./DiscussionCommentBlock";
-import AddCommentForm from "./AddCommentForm";
+import DiscussionArgumentBlock from "./DiscussionArgumentBlock";
+import AddArgumentForm from "./AddArgumentForm";
 import { useCookies } from "react-cookie";
 
 interface DiscussionSectionProps {
@@ -18,7 +18,7 @@ interface OpinionButtonData {
 
 function DiscussionSection(props: DiscussionSectionProps) {
   const [opinionButtonData, setOpinionButtonData] = useState<OpinionButtonData[]>([]);
-  const [opinions, setOpinions] = useState<DiscussionComment[]>([]);
+  const [opinions, setOpinions] = useState<DiscussionArgument[]>([]);
   const [cookies] = useCookies(["token"]);
 
   const isLoggedIn = () : boolean => {
@@ -62,43 +62,14 @@ function DiscussionSection(props: DiscussionSectionProps) {
     );
   };
 
-  const getSelectedOpinion = () => {
-    const selectedOpinion = opinionButtonData.find((data) => data.selected);
-
-    if (!selectedOpinion) return "";
-
-    return selectedOpinion.opinionName;
-  };
-
-  const renderOpinionFilterButtons = () => {
-    return (
-      <div className="flex gap-8 items-center justify-around mb-4">
-        {opinionButtonData.map((opinionButton) => {
-          return (
-            <button
-              className={`w-full py-2 lg:text-2xl rounded-lg transition-colors`}
-              key={opinionButton.opinionName}
-              onClick={() =>
-                selectOpinionFilterButton(opinionButton.opinionName)
-              }
-              style={{backgroundColor: opinionButton.selected ? `#${opinionButton.colour}` : "#1a202c"}}
-            >
-              <p>{opinionButton.opinionName}</p>
-            </button>
-          );
-        })}
-      </div>
-    );
-  };
-
   const renderDiscussion = () => {
     if (isEmpty(opinions)) return;
 
     return (
       <div className="bg-gray-900 p-4 rounded-lg flex flex-col gap-4">
-        {opinions.map((comment, i) => {
+        {opinions.map((argument, i) => {
           return (
-            <DiscussionCommentBlock comment={comment} pulseOpinions={props.pulse.opinions} key={i}/>
+            <DiscussionArgumentBlock argument={argument} pulseOpinions={props.pulse.opinions} key={i}/>
           );
         })}
       </div>
@@ -114,7 +85,7 @@ function DiscussionSection(props: DiscussionSectionProps) {
     <div className="bg-gray-800 p-2 lg:p-8 w-full">
       <p className="mb-4 text-2xl">Discussion</p>
       {
-        isLoggedIn() ? <AddCommentForm pulse={props.pulse} parentCommentId={null} reloadDiscussionData={getDiscussionData} /> : <></>
+        isLoggedIn() ? <AddArgumentForm pulse={props.pulse} parentArgumentId={null} reloadDiscussionData={getDiscussionData} /> : <></>
       }
       {renderDiscussion()}
     </div>

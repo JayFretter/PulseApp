@@ -1,6 +1,6 @@
 export interface PostOpinionBody {
   pulseId: string;
-  parentCommentId: string | null
+  parentArgumentId: string | null
   opinionName: string;
   opinionBody: string,
 }

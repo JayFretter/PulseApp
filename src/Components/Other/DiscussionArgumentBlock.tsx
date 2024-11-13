@@ -1,4 +1,4 @@
-import { DiscussionComment } from "../../Models/Discussion";
+import { DiscussionArgument } from "../../Models/Discussion";
 import {
   BsFillArrowUpCircleFill,
   BsFillArrowDownCircleFill,
@@ -7,12 +7,12 @@ import { PulseOpinion } from "../../Models/Pulse";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 
-interface DiscussionCommentProps {
-  comment: DiscussionComment;
+interface DiscussionArgumentProps {
+  argument: DiscussionArgument;
   pulseOpinions: PulseOpinion[];
 }
 
-function DiscussionCommentBlock(props: DiscussionCommentProps) {
+function DiscussionArgumentBlock(props: DiscussionArgumentProps) {
   const [cookies] = useCookies(["token"]);
   const [currentUserVote, setCurrentUserVote] = useState(0);
 
@@ -31,7 +31,7 @@ function DiscussionCommentBlock(props: DiscussionCommentProps) {
       if (isLoggedIn()) setCurrentUserVote(-1);
     }
 
-    const url = `${process.env.REACT_APP_API_BASE_URL}/discussions/vote-comment/${props.comment.id}?voteType=${voteType}`;
+    const url = `${process.env.REACT_APP_API_BASE_URL}/discussions/arguments/${props.argument.id}/vote?voteType=${voteType}`;
     const options = {
       method: "PUT",
       headers: {
@@ -45,7 +45,7 @@ function DiscussionCommentBlock(props: DiscussionCommentProps) {
   };
 
   const opinionTagColour = props.pulseOpinions.filter(
-    (op) => op.name == props.comment.opinionName
+    (op) => op.name == props.argument.opinionName
   )[0].hexColour;
 
   return (
@@ -55,10 +55,10 @@ function DiscussionCommentBlock(props: DiscussionCommentProps) {
           className="text-sm text-white font-semibold px-2 rounded-md self-end"
           style={{ backgroundColor: `#${opinionTagColour}` }}
         >
-          {props.comment.opinionName}
+          {props.argument.opinionName}
         </p>
         <p>·</p>
-        <p className="text-sm">{props.comment.username}</p>
+        <p className="text-sm">{props.argument.username}</p>
         <div className="flex items-center gap-1">
           <button
             className="hover:text-green-500 hover:bg-slate-700 text-lg p-1 rounded-sm"
@@ -67,7 +67,7 @@ function DiscussionCommentBlock(props: DiscussionCommentProps) {
             <BsFillArrowUpCircleFill />
           </button>
           <p className="text-sm">
-            {props.comment.upvotes - props.comment.downvotes + currentUserVote}
+            {props.argument.upvotes - props.argument.downvotes + currentUserVote}
           </p>
           <button
             className="hover:text-red-600 hover:bg-slate-700 text-lg p-1 rounded-sm"
@@ -78,12 +78,12 @@ function DiscussionCommentBlock(props: DiscussionCommentProps) {
         </div>
       </div>
       <p className="text-md text-left text-gray-100">
-        {props.comment.commentBody}
+        {props.argument.argumentBody}
       </p>
-      {props.comment.children.map((comment, i) => {
+      {props.argument.children.map((argument, i) => {
         return (
-          <DiscussionCommentBlock
-            comment={comment}
+          <DiscussionArgumentBlock
+            argument={argument}
             pulseOpinions={props.pulseOpinions}
             key={i}
           />
@@ -93,4 +93,4 @@ function DiscussionCommentBlock(props: DiscussionCommentProps) {
   );
 }
 
-export default DiscussionCommentBlock;
+export default DiscussionArgumentBlock;

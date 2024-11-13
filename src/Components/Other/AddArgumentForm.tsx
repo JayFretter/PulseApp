@@ -1,28 +1,28 @@
 import { useRef, useState } from "react";
 import useAutosizeTextArea from "../../Hooks/useAutosizeTextArea";
 import { Pulse } from "../../Models/Pulse";
-import { usePostDiscussionOpinion } from "../../Hooks/usePostDiscussionOpinion";
+import { usePostDiscussionArgument } from "../../Hooks/usePostDiscussionOpinion";
 import { PostOpinionBody } from "../../Models/PostOpinionBody";
 
-interface AddCommentFormProps {
+interface AddArgumentFormProps {
   pulse: Pulse;
-  parentCommentId: string | null;
+  parentArgumentId: string | null;
   reloadDiscussionData: () => void;
 }
 
-export default function AddCommentForm(props: AddCommentFormProps) {
-  const [commentValue, setCommentValue] = useState("");
+export default function AddArgumentForm(props: AddArgumentFormProps) {
+  const [argumentValue, setArgumentValue] = useState("");
   const [chosenOpinion, setChosenOpinion] = useState<string | null>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const postOpinion = usePostDiscussionOpinion();
+  const postArgument = usePostDiscussionArgument();
 
-  useAutosizeTextArea(textAreaRef.current, commentValue);
+  useAutosizeTextArea(textAreaRef.current, argumentValue);
 
   const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCommentValue(evt.target?.value);
+    setArgumentValue(evt.target?.value);
   };
 
-  const addComment = (e: React.FormEvent) => {
+  const addArgument = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!chosenOpinion) {
@@ -31,12 +31,12 @@ export default function AddCommentForm(props: AddCommentFormProps) {
 
     const body: PostOpinionBody = {
       pulseId: props.pulse.id,
-      parentCommentId: props.parentCommentId,
+      parentArgumentId: props.parentArgumentId,
       opinionName: chosenOpinion,
-      opinionBody: commentValue,
+      opinionBody: argumentValue,
     };
 
-    let response = postOpinion(body);
+    let response = postArgument(body);
     response.then((success) => {
       if (success) props.reloadDiscussionData();
     });
@@ -69,13 +69,13 @@ export default function AddCommentForm(props: AddCommentFormProps) {
   return (
     <form
       className="mx-auto flex flex-col gap-2 my-12 max-w-4xl rounded-xl"
-      onSubmit={addComment}
+      onSubmit={addArgument}
     >
       <textarea
         className="bg-slate-900 text-white px-2 p-2 border-2 border-slate-500 rounded-xl overflow-hidden"
         rows={1}
         placeholder="Give your opinion..."
-        name="comment"
+        name="argument"
         onChange={handleChange}
         ref={textAreaRef}
       />
