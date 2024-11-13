@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { VictoryLabel, VictoryPie, VictoryPortal } from "victory";
 import { Pulse } from "../../Models/Pulse";
-
-const CHART_HEIGHT = 340;
+import PulseChart from "../Shared/PulseChart";
 
 interface PulseDetailProps {
   pulse: Pulse;
@@ -10,28 +8,17 @@ interface PulseDetailProps {
 
 function PulseDetails(props: PulseDetailProps) {
   const [totalPulseVotes, setTotalPulseVotes] = useState(0);
-  const [pulseChartData, setPulseChartData] = useState<any[]>([]);
 
   let date = new Date(props.pulse.createdAtUtc);
 
   const getPulseChartData = (pulseData: Pulse) => {
-    const pieSlices: any[] = [];
-
     let totalVotes = 0;
+
     pulseData.opinions.forEach((o) => {
       totalVotes += o.votes;
     });
 
-    pulseData.opinions.forEach((o) => {
-      pieSlices.push({
-        x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(0)}%)`,
-        y: o.votes,
-        colour: `#${o.hexColour}`,
-      });
-    });
-
     setTotalPulseVotes(totalVotes);
-    setPulseChartData(pieSlices);
   };
 
   useEffect(() => {
@@ -47,16 +34,7 @@ function PulseDetails(props: PulseDetailProps) {
       <p className="mb-4 text-sm text-gray-400">{totalPulseVotes} votes</p>
       <p className="text-xl mb-4">{props.pulse.title}</p>
       <div className="mx-auto max-w-[500px]">
-        <VictoryPie
-          height={CHART_HEIGHT}
-          data={pulseChartData}
-          style={{ labels: { fill: "white", fontSize: 12 }, data: { fill: (d) => d.datum.colour, stroke: 'white', strokeWidth: 2}}}
-          labelComponent={
-            <VictoryPortal>
-              <VictoryLabel />
-            </VictoryPortal>
-          }
-        />
+        <PulseChart chartHeight={340} pulse={props.pulse} />
       </div>
     </div>
   );

@@ -1,7 +1,11 @@
-export function useVoteColourGenerator() {
+export function usePulseColourGenerator() {
   const minColourRgb: number[] = [214, 156, 217];
   const maxColourRgb: number[] = [43, 5, 232];
   const defaultColourHex: string = "77738c";
+
+  const linearInterpolate = (a: number, b: number, frac: number) => {
+    return a + (b - a) * frac;
+  };
 
   const generateHexes = (count: number): string[] => {
     if (count === 0) return [defaultColourHex];
@@ -17,7 +21,9 @@ export function useVoteColourGenerator() {
 
       for (let i = 1; i <= stops; i++) {
         const interpolationFraction = i / denominator;
-        const interpolatedColour = minColourRgb.map((c, i) => c + interpolationFraction * maxMinusMinColour[i]);
+        const interpolatedColour = minColourRgb.map(
+          (c, i) => linearInterpolate(c, maxColourRgb[i], interpolationFraction)
+        );
         colours.push(rgbToHex(interpolatedColour));
       }
 
@@ -31,8 +37,7 @@ export function useVoteColourGenerator() {
     let final = "";
 
     let padAmount = 2;
-    if (padding !== undefined)
-      padAmount = padding;
+    if (padding !== undefined) padAmount = padding;
 
     rgbVal.forEach((colour) => {
       let colourAsHex = Math.round(colour).toString(16);

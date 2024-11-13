@@ -1,51 +1,31 @@
 import { useState, useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
+import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { isEmpty } from "../../Helpers/Helpers";
 import { Pulse } from "../../Models/Pulse";
 import DiscussionSection from "../Other/DiscussionSection";
 import PulseDetails from "../Other/PulseDetails";
+import { useGetPulse } from "../../Hooks/useGetPulse";
 
-export async function loader(x: any) {
+export async function loader(x: LoaderFunctionArgs) {
   return x.params.pulseId;
 }
 
 function DiscussionPage() {
-  const pulseId = useLoaderData();
-  const [pulse, setPulse] = useState({} as any);
+  const pulseId = useLoaderData() as string;
+  const [pulse, setPulse] = useState({} as Pulse);
+  const getPulse = useGetPulse();
 
-  const getPulse = () => {
-    const url = `${process.env.REACT_APP_API_BASE_URL}/pulses?id=${pulseId}`;
-    const options = {
-      method: "GET",
-    };
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((data) => setPulse(data))
-      .catch((err) => console.error(err));
+  const fetchPulse = async () => {
+    const fetchedPulse = await getPulse(pulseId);
+    if (fetchedPulse)
+      setPulse(fetchedPulse);
+    else 
+      console.error(`Could not fetch pulse with ID ${pulseId}`)
   };
 
   useEffect(() => {
-    getPulse();
+    fetchPulse();
   }, []);
-
-  const getPulseChartData = (pulseData: Pulse) => {
-    // console.log(pulseData.opinions);
-    const pieSlices: any[] = [];
-
-    let totalVotes = 0;
-    pulseData.opinions.forEach((o) => {
-      totalVotes += o.votes;
-    });
-
-    pulseData.opinions.forEach((o) => {
-      pieSlices.push({
-        x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(0)}%)`,
-        y: o.votes,
-      });
-    });
-
-    return pieSlices;
-  };
 
   const renderPulseContainer = (pulseData: Pulse) => {
     if (!isEmpty(pulseData)) {

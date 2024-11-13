@@ -1,61 +1,25 @@
 import { useState, useEffect } from "react";
-import { VictoryPie, VictoryPortal, VictoryLabel } from "victory";
 import { AiFillFire } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { Pulse } from "../../Models/Pulse";
 import { useUserCredentials } from "../../Hooks/useUserCredentials";
-import { useVoteColourGenerator } from "../../Hooks/useVoteColourGenerator";
-
-const CHART_HEIGHT = 340;
+import PulseChart from "../Shared/PulseChart";
+import { useGetAllPulses } from "../../Hooks/useGetAllPulses";
 
 function HomePage() {
   const [pulses, setPulses] = useState<Pulse[]>([]);
-  const [isLoggedIn, getUserCredentials] = useUserCredentials();
+  const [isLoggedIn, _] = useUserCredentials();
   const navigate = useNavigate();
-  const generateColoursForVotes = useVoteColourGenerator();
+  const getAllPulses = useGetAllPulses();
 
-  const getPulses = () => {
-    const url = `${process.env.REACT_APP_API_BASE_URL}/pulses/all/`;
-    const options = {
-      method: "GET",
-    };
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setPulses(data);
-      })
-      .catch((err) => console.error(err));
+  const getPulses = async () => {
+    const allPulses = await getAllPulses();
+    setPulses(allPulses);
   };
 
   useEffect(() => {
     getPulses();
   }, []);
-
-  const getPulseChartData = (pulse: Pulse) => {
-    const pieSlices: any[] = [];
-
-    let totalVotes = 0;
-    pulse.opinions.forEach((o) => {
-      totalVotes += o.votes;
-    });
-
-    let colours = generateColoursForVotes(pulse.opinions.length);
-    console.log('colours for pulse ' + pulse.title);
-    console.log(colours);
-
-    pulse.opinions.sort((a, b) => a.votes - b.votes);
-
-    pulse.opinions.forEach((o, i) => {
-      pieSlices.push({
-        x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(0)}%)`,
-        y: o.votes,
-        colour: `#${colours[i]}`
-      });
-    });
-
-    return pieSlices;
-  };
 
   const onCreateButtonClicked = () =>
   {
@@ -75,17 +39,7 @@ function HomePage() {
           return (
             <div className="pulse-card lg:text-2xl" key={pulse.id}>
               <p className="mt-2 mb-4">{pulse.title}</p>
-              <VictoryPie
-                colorScale="warm"
-                height={CHART_HEIGHT}
-                data={getPulseChartData(pulse)}
-                style={{ labels: { fill: "white" }, data: {fill: d => d.datum.colour, stroke: 'white', strokeWidth: 2} }}
-                labelComponent={
-                  <VictoryPortal>
-                    <VictoryLabel />
-                  </VictoryPortal>
-                }
-              />
+              <PulseChart chartHeight={340} pulse={pulse} />
               <Link to={`discussion/${pulse.id}`}>
                 <button className="border-2 border-blue-700 rounded-xl text-lg px-4 py-2 hover:bg-blue-900 transition-colors">
                   Go to discussion
