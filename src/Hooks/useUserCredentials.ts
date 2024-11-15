@@ -1,8 +1,8 @@
-import { useCookies } from "react-cookie";
-import { UserCredentials } from "../Models/UserCredentials";
+import { useCookies } from 'react-cookie';
+import { UserCredentials } from '../Models/UserCredentials';
 
-export function useUserCredentials() : [() => boolean, () => UserCredentials | null] {
-  const [cookies] = useCookies(["token"]);
+export function useUserCredentials(): [() => boolean, () => UserCredentials | null] {
+  const [cookies] = useCookies(['username', 'token']);
 
   const isLoggedIn = (): boolean => {
     return cookies.token !== undefined;
@@ -11,6 +11,7 @@ export function useUserCredentials() : [() => boolean, () => UserCredentials | n
   const getUserCredentials = (): UserCredentials | null => {
     if (isLoggedIn()) {
       return {
+        username: cookies.username,
         token: cookies.token,
       } as UserCredentials;
     }

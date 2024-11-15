@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { AiFillFire } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
-import { Pulse } from "../../Models/Pulse";
-import { useUserCredentials } from "../../Hooks/useUserCredentials";
-import PulseChart from "../Shared/PulseChart";
-import { useGetAllPulses } from "../../Hooks/useGetAllPulses";
+import { useState, useEffect } from 'react';
+import { AiFillFire } from 'react-icons/ai';
+import { Link, useNavigate } from 'react-router-dom';
+import { Pulse } from '../../Models/Pulse';
+import { useUserCredentials } from '../../Hooks/useUserCredentials';
+import PulseChart from '../Shared/PulseChart';
+import { useGetAllPulses } from '../../Hooks/useGetAllPulses';
 
 function HomePage() {
   const [pulses, setPulses] = useState<Pulse[]>([]);
@@ -21,16 +21,19 @@ function HomePage() {
     getPulses();
   }, []);
 
-  const onCreateButtonClicked = () =>
-  {
+  const onCreateButtonClicked = () => {
     navigate('pulses/new');
-  }
+  };
 
   const renderCreateButton = () => {
     if (isLoggedIn()) {
-      return <button className="bg-blue-700 hover:bg-blue-900 px-4 py-2 rounded-lg text-xl" onClick={onCreateButtonClicked}>Create a Pulse</button>
+      return (
+        <button className="bg-blue-700 hover:bg-blue-900 px-4 py-2 rounded-lg text-xl" onClick={onCreateButtonClicked}>
+          Create a Pulse
+        </button>
+      );
     }
-  }
+  };
 
   const renderPulseContainer = () => {
     return (

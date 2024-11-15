@@ -3,7 +3,7 @@ import { Pulse } from "../../Models/Pulse";
 import { usePulseColourGenerator } from "../../Hooks/usePulseColourGenerator";
 
 interface PulseChartProps {
-  chartHeight: number;
+chartHeight: number;
   pulse: Pulse
 }
 
@@ -19,8 +19,6 @@ function PulseChart(props: PulseChartProps) {
     });
 
     let colours = generateColoursForVotes(pulse.opinions.length);
-    console.log('colours for pulse ' + pulse.title);
-    console.log(colours);
 
     pulse.opinions.sort((a, b) => a.votes - b.votes);
 
