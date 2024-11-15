@@ -8,11 +8,12 @@ import './index.css';
 import Root from './Root';
 import HomePage from './Components/Pages/HomePage';
 import LoginPage from './Components/Pages/LoginPage';
-import ProfilePage from './Components/Pages/ProfilePage';
+import ProfilePage, { loader as profilePageLoader } from './Components/Pages/ProfilePage';
 import ErrorPage from './ErrorPage';
 import reportWebVitals from './reportWebVitals';
-import DiscussionPage, { loader as discussionPageLoader } from './Components/Pages/DiscussionPage.tsx';
+import DiscussionPage, { loader as discussionPageLoader } from './Components/Pages/DiscussionPage';
 import CreatePulsePage from './Components/Pages/CreatePulsePage';
+import SignUpPage from './Components/Pages/SignUpPage';
 
 const router = createBrowserRouter([
   {
@@ -29,8 +30,13 @@ const router = createBrowserRouter([
         element: <LoginPage />
       },
       {
-        path: "/profile",
-        element: <ProfilePage />
+        path: "/sign-up",
+        element: <SignUpPage />
+      },
+      {
+        path: "/profile/:username",
+        element: <ProfilePage />,
+        loader: profilePageLoader
       },
       {
         path: "/discussion/:pulseId",

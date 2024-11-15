@@ -1,19 +1,21 @@
 import { useCookies } from "react-cookie";
-
 import { Link } from "react-router-dom";
+import { useUserCredentials } from "../../Hooks/useUserCredentials";
 
 function Navbar() {
-  const [cookies, _, removeCookie] = useCookies(["token"]);
+  const [, , removeCookie] = useCookies(["token"]);
+  const [isLoggedIn, getUserCredentials] = useUserCredentials();
 
   const logOut = () => {
     removeCookie("token", { path: "/" });
   };
 
   const renderNavbarLinks = () => {
-    if (cookies.token) {
+    if (isLoggedIn()) {
+      const credentials = getUserCredentials();
       return (
         <div className="flex items-center gap-4 uppercase font-thin">
-          <Link to={`profile`} className="hidden md:block">
+          <Link to={`profile/${credentials!.username}`} className="hidden md:block">
             Profile
           </Link>
           <Link to={`/`} className="hidden md:block" onClick={logOut}>
