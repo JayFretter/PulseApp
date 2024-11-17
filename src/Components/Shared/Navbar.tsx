@@ -16,7 +16,7 @@ function Navbar() {
       return (
         <div className="flex items-center gap-4 uppercase font-thin">
           <Link to={`profile/${credentials!.username}`} className="hidden md:block">
-            Profile
+            Hi, {credentials!.username}
           </Link>
           <Link to={`/`} className="hidden md:block" onClick={logOut}>
             Log Out
