@@ -17,7 +17,6 @@ interface OpinionButtonData {
 }
 
 function DiscussionSection(props: DiscussionSectionProps) {
-  const [opinionButtonData, setOpinionButtonData] = useState<OpinionButtonData[]>([]);
   const [opinions, setOpinions] = useState<DiscussionArgument[]>([]);
   const [cookies] = useCookies(["token"]);
 
@@ -36,31 +35,6 @@ function DiscussionSection(props: DiscussionSectionProps) {
       .catch((err) => console.error(err));
   };
 
-  const setOpinionButtonsData = () => {
-    const data: OpinionButtonData[] = [];
-    props.pulse.opinions.forEach((op) => {
-      data.push({
-        opinionName: op.name,
-        selected: false,
-        colour: op.hexColour,
-      });
-    });
-
-    setOpinionButtonData(data);
-  };
-
-  const selectOpinionFilterButton = (opinionName: string) => {
-    setOpinionButtonData(
-      opinionButtonData.map((data) => {
-        if (data.opinionName === opinionName) {
-          data.selected = true;
-        } else {
-          data.selected = false;
-        }
-        return data;
-      })
-    );
-  };
 
   const renderDiscussion = () => {
     if (isEmpty(opinions)) return;
@@ -78,7 +52,6 @@ function DiscussionSection(props: DiscussionSectionProps) {
 
   useEffect(() => {
     getDiscussionData();
-    setOpinionButtonsData();
   }, []);
 
   return (

@@ -41,8 +41,7 @@ function CreatePulsePage() {
       title: (e.target as any).title.value,
       opinions: selectableAnswers.map((o) => {
         return {
-          name: o.name,
-          hexColour: o.colour,
+          name: o.name
         };
       }),
     };

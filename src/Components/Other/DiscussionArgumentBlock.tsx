@@ -6,6 +6,7 @@ import {
 import { PulseOpinion } from "../../Models/Pulse";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
+import { usePulseColourGenerator } from "../../Hooks/usePulseColourGenerator";
 
 interface DiscussionArgumentProps {
   argument: DiscussionArgument;
@@ -15,6 +16,7 @@ interface DiscussionArgumentProps {
 function DiscussionArgumentBlock(props: DiscussionArgumentProps) {
   const [cookies] = useCookies(["token"]);
   const [currentUserVote, setCurrentUserVote] = useState(0);
+  const mapOpinionsToColours = usePulseColourGenerator();
 
   const isLoggedIn = () : boolean => {
     return cookies.token ? true : false;
@@ -44,16 +46,17 @@ function DiscussionArgumentBlock(props: DiscussionArgumentProps) {
       .catch((err) => console.error(err));
   };
 
-  const opinionTagColour = props.pulseOpinions.filter(
-    (op) => op.name == props.argument.opinionName
-  )[0].hexColour;
+  const getOpinionTagColour = () => {
+    const colourMap = mapOpinionsToColours(props.pulseOpinions);
+    return colourMap.get(props.argument.opinionName);
+  } 
 
   return (
     <div className="bg-slate-800 pl-3 pt-3 pb-3 flex flex-col border-l-2 border-blue-300 gap-2">
       <div className="flex items-center gap-2 text-gray-400">
         <p
           className="text-sm text-white font-semibold px-2 rounded-md self-end"
-          style={{ backgroundColor: `#${opinionTagColour}` }}
+          style={{ backgroundColor: `#${getOpinionTagColour()}` }}
         >
           {props.argument.opinionName}
         </p>

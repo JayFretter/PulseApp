@@ -1,7 +1,6 @@
 export interface PulseOpinion {
   name: string;
   votes: number;
-  hexColour: string;
 }
 
 export interface PulseCreatedBy {

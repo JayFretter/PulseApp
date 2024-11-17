@@ -8,7 +8,7 @@ chartHeight: number;
 }
 
 function PulseChart(props: PulseChartProps) {
-  const generateColoursForVotes = usePulseColourGenerator();
+  const mapOpinionsToColours = usePulseColourGenerator();
 
   const getPulseChartData = (pulse: Pulse) => {
     const pieSlices: any[] = [];
@@ -18,15 +18,13 @@ function PulseChart(props: PulseChartProps) {
       totalVotes += o.votes;
     });
 
-    let colours = generateColoursForVotes(pulse.opinions.length);
-
-    pulse.opinions.sort((a, b) => a.votes - b.votes);
+    const colourMap = mapOpinionsToColours(pulse.opinions);
 
     pulse.opinions.forEach((o, i) => {
       pieSlices.push({
         x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(0)}%)`,
         y: o.votes,
-        colour: `#${colours[i]}`
+        colour: `#${colourMap.get(o.name)}`
       });
     });
 

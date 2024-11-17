@@ -3,6 +3,7 @@ import useAutosizeTextArea from "../../Hooks/useAutosizeTextArea";
 import { Pulse } from "../../Models/Pulse";
 import { usePostDiscussionArgument } from "../../Hooks/usePostDiscussionOpinion";
 import { PostOpinionBody } from "../../Models/PostOpinionBody";
+import { usePulseColourGenerator } from "../../Hooks/usePulseColourGenerator";
 
 interface AddArgumentFormProps {
   pulse: Pulse;
@@ -15,6 +16,7 @@ export default function AddArgumentForm(props: AddArgumentFormProps) {
   const [chosenOpinion, setChosenOpinion] = useState<string | null>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const postArgument = usePostDiscussionArgument();
+  const mapOpinionsToColours = usePulseColourGenerator();
 
   useAutosizeTextArea(textAreaRef.current, argumentValue);
 
@@ -43,6 +45,7 @@ export default function AddArgumentForm(props: AddArgumentFormProps) {
   };
 
   const renderOpinionButtons = () => {
+    const colourMap = mapOpinionsToColours(props.pulse.opinions);
     return (
       <div className="flex gap-2">
         {props.pulse.opinions.map((op, i) => {
@@ -54,7 +57,7 @@ export default function AddArgumentForm(props: AddArgumentFormProps) {
               type="button"
               key={i}
               style={{
-                borderColor: `${chosen ? `#${op.hexColour}` : "transparent"}`,
+                borderColor: `${chosen ? `#${colourMap.get(op.name)}` : "transparent"}`,
               }}
               onClick={() => setChosenOpinion(op.name)}
             >

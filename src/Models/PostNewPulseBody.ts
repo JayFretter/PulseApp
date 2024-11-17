@@ -1,6 +1,5 @@
 interface PostNewPulseBodyOpinion {
   name: string;
-  hexColour: string;
 }
 
 export interface PostNewPulseBody {
