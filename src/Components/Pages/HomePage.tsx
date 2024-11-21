@@ -39,14 +39,11 @@ function HomePage() {
     return (
       <div className="w-full flex-wrap px-10 flex flex-col items-center lg:flex-row lg:justify-center gap-8 lg:gap-40 text-center text-slate-100">
         {pulses.map((pulse) => {
-          const tagList = pulse.tags.split(',');
-
           let tags = <></>;
-
-          if (tagList.length > 0) {
+          if (pulse.tags) {
             tags = (
               <div className="flex gap-1 items-center justify-center mb-4">
-                {tagList.map((tag, i) => {
+                {pulse.tags.split(',').map((tag, i) => {
                   return (
                     <p className="bg-slate-600 text-base px-2 py-1 rounded-sm" key={i}>
                       {tag}
