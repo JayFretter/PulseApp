@@ -7,6 +7,7 @@ import { PulseOpinion } from "../../Models/Pulse";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 import { usePulseColourGenerator } from "../../Hooks/usePulseColourGenerator";
+import { useGetArgumentChildren } from "../../Hooks/useGetArgumentChildren";
 
 interface DiscussionArgumentProps {
   argument: DiscussionArgument;
@@ -16,7 +17,9 @@ interface DiscussionArgumentProps {
 function DiscussionArgumentBlock(props: DiscussionArgumentProps) {
   const [cookies] = useCookies(["token"]);
   const [currentUserVote, setCurrentUserVote] = useState(0);
+  const [children, setChildren] = useState<DiscussionArgument[]>([]);
   const mapOpinionsToColours = usePulseColourGenerator();
+  const getArgumentChildren = useGetArgumentChildren();
 
   const isLoggedIn = () : boolean => {
     return cookies.token ? true : false;
@@ -33,6 +36,7 @@ function DiscussionArgumentBlock(props: DiscussionArgumentProps) {
       if (isLoggedIn()) setCurrentUserVote(-1);
     }
 
+    // TODO: factor out
     const url = `${process.env.REACT_APP_API_BASE_URL}/discussions/arguments/${props.argument.id}/vote?voteType=${voteType}`;
     const options = {
       method: "PUT",
@@ -45,6 +49,14 @@ function DiscussionArgumentBlock(props: DiscussionArgumentProps) {
       .then((res) => res.json())
       .catch((err) => console.error(err));
   };
+
+  const fetchChildOpinions = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const children = await getArgumentChildren(props.argument.id);
+    setChildren(children);
+
+  }
 
   const getOpinionTagColour = () => {
     const colourMap = mapOpinionsToColours(props.pulseOpinions);
@@ -83,7 +95,8 @@ function DiscussionArgumentBlock(props: DiscussionArgumentProps) {
       <p className="text-md text-left text-gray-100">
         {props.argument.argumentBody}
       </p>
-      {props.argument.children.map((argument, i) => {
+      <button className="self-start text-slate-500" onClick={fetchChildOpinions}>View responses...</button>
+      {children.map((argument, i) => {
         return (
           <DiscussionArgumentBlock
             argument={argument}

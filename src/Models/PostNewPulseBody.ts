@@ -4,5 +4,6 @@ interface PostNewPulseBodyOpinion {
 
 export interface PostNewPulseBody {
   title: string;
+  tags?: string;
   opinions: PostNewPulseBodyOpinion[]
 }

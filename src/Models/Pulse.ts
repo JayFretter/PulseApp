@@ -11,6 +11,7 @@ export interface PulseCreatedBy {
 export interface Pulse {
   id: string;
   title: string;
+  tags: string;
   opinions: PulseOpinion[];
   createdBy: PulseCreatedBy;
   createdAtUtc: string;
