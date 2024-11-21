@@ -45,7 +45,7 @@ function HomePage() {
 
           if (tagList.length > 0) {
             tags = (
-              <div className="flex gap-1 items-center justify-center">
+              <div className="flex gap-1 items-center justify-center mb-4">
                 {tagList.map((tag, i) => {
                   return (
                     <p className="bg-slate-600 text-base px-2 py-1 rounded-sm" key={i}>

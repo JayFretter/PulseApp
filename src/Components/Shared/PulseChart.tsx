@@ -1,10 +1,10 @@
-import { VictoryLabel, VictoryPie, VictoryPortal } from "victory";
-import { Pulse } from "../../Models/Pulse";
-import { usePulseColourGenerator } from "../../Hooks/usePulseColourGenerator";
+import { VictoryLabel, VictoryLegend, VictoryPie, VictoryPortal } from 'victory';
+import { Pulse } from '../../Models/Pulse';
+import { usePulseColourGenerator } from '../../Hooks/usePulseColourGenerator';
 
 interface PulseChartProps {
-chartHeight: number;
-  pulse: Pulse
+  chartHeight: number;
+  pulse: Pulse;
 }
 
 function PulseChart(props: PulseChartProps) {
@@ -20,36 +20,53 @@ function PulseChart(props: PulseChartProps) {
 
     const colourMap = mapOpinionsToColours(pulse.opinions);
 
-    pulse.opinions.forEach((o, i) => {
-      pieSlices.push({
-        x: `${o.name} (${((o.votes / totalVotes) * 100).toFixed(0)}%)`,
-        y: o.votes,
-        colour: `#${colourMap.get(o.name)}`
+    if (totalVotes === 0) {
+      pulse.opinions.forEach((o, _) => {
+        pieSlices.push({
+          x: o.name,
+          y: 1,
+          colour: '#555555',
+        });
       });
-    });
+    } else {
+      pulse.opinions.forEach((o, _) => {
+        let percentageSuffix = totalVotes === 0 ? '' : ` (${((o.votes / totalVotes) * 100).toFixed(0)}%)`;
+
+        pieSlices.push({
+          x: o.name + percentageSuffix,
+          y: o.votes,
+          colour: `#${colourMap.get(o.name)}`,
+        });
+      });
+    }
 
     return pieSlices;
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap gap-x-4 gap-y-2 items-center justify-center text-base">
+        {getPulseChartData(props.pulse).map((d, i) => {
+          return (
+            <div className="flex gap-2 items-center justify-center" key={i}>
+              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: d.colour }} />
+              <p>{d.x}</p>
+            </div>
+          );
+        })}
+      </div>
       <VictoryPie
         colorScale="warm"
         height={props.chartHeight}
         data={getPulseChartData(props.pulse)}
         style={{
-          labels: { fill: "white" },
           data: {
             fill: (d) => d.datum.colour,
-            stroke: "white",
+            stroke: 'white',
             strokeWidth: 2,
           },
         }}
-        labelComponent={
-          <VictoryPortal>
-            <VictoryLabel />
-          </VictoryPortal>
-        }
+        labels={() => null}
       />
     </div>
   );

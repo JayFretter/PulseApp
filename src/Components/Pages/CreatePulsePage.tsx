@@ -96,8 +96,14 @@ function CreatePulsePage() {
   };
 
   const addTag = () => {
-    setTags([...tags, 'test']);
+    setTags([...tags, '']);
   };
+
+  const setTag = (i: number, tag: string) => {
+    const newTags = [...tags];
+    newTags[i] = tag;
+    setTags(newTags);
+  }
 
   const removeTag = (i: number) => {
     let newTags = tags.filter((_, index) => index !== i);
@@ -111,7 +117,7 @@ function CreatePulsePage() {
         <p className="text-xl text-slate-600 mb-2">Tags:</p>
         <div className="flex gap-1 flex-wrap max-w-full">
           {tags.map((_, i) => {
-            return <PulseTag index={i} deleteFunc={removeTag} key={i} />;
+            return <PulseTag index={i} setTagValueFunc={setTag} tagValue={tags[i]} deleteFunc={removeTag} key={i} />;
           })}
         </div>
       </div>
@@ -124,8 +130,8 @@ function CreatePulsePage() {
         <div className="text-base text-red-600">
           <p className="">Cannot submit Pulse</p>
           <ul className="list-disc pl-5">
-            {validationErrors.map((e) => (
-              <li>{e}</li>
+            {validationErrors.map((e, i) => (
+              <li key={i}>{e}</li>
             ))}
           </ul>
         </div>
