@@ -55,7 +55,7 @@ function DiscussionSection(props: DiscussionSectionProps) {
   }, []);
 
   return (
-    <div className="bg-gray-800 p-2 lg:p-8 w-full">
+    <div className="p-2 lg:p-8 w-full">
       <p className="mb-4 text-2xl">Discussion</p>
       {
         isLoggedIn() ? <AddArgumentForm pulse={props.pulse} parentArgumentId={null} reloadDiscussionData={getDiscussionData} /> : <></>

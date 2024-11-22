@@ -26,7 +26,7 @@ function PulseDetails(props: PulseDetailProps) {
   }, [props.pulse]);
 
   return (
-    <div className="bg-gray-800 p-8 w-full">
+    <div className="p-8 w-full">
       <p className="text-md">
         Posted by {props.pulse.createdBy.username},{" "}
         <span className="text-gray-400">{date.toLocaleString()}</span>

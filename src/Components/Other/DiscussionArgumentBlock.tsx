@@ -64,7 +64,7 @@ function DiscussionArgumentBlock(props: DiscussionArgumentProps) {
   } 
 
   return (
-    <div className="bg-slate-800 pl-3 pt-3 pb-3 flex flex-col border-l-2 border-blue-300 gap-2">
+    <div className="bg-slate-800 px-3 py-3 flex flex-col border-l-2 border-blue-300 gap-2">
       <div className="flex items-center gap-2 text-gray-400">
         <p
           className="text-sm text-white font-semibold px-2 rounded-md self-end"
