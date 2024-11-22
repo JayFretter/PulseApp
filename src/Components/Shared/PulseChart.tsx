@@ -11,6 +11,7 @@ function PulseChart(props: PulseChartProps) {
   const mapOpinionsToColours = usePulseColourGenerator();
 
   const getPulseChartData = (pulse: Pulse) => {
+    // TODO
     const pieSlices: any[] = [];
 
     let totalVotes = 0;
@@ -33,23 +34,25 @@ function PulseChart(props: PulseChartProps) {
         let percentageSuffix = totalVotes === 0 ? '' : ` (${((o.votes / totalVotes) * 100).toFixed(0)}%)`;
 
         pieSlices.push({
-          x: o.name + percentageSuffix,
+          x: o.name,
           y: o.votes,
           colour: `#${colourMap.get(o.name)}`,
         });
       });
     }
 
-    return pieSlices;
+    return pieSlices.sort((a, b) => b.y - a.y);
   };
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap gap-x-4 gap-y-2 items-center justify-center text-base">
+      <div className="flex flex-col gap-y-2 mx-auto items-start justify-center text-base">
         {getPulseChartData(props.pulse).map((d, i) => {
           return (
             <div className="flex gap-2 items-center justify-center" key={i}>
-              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: d.colour }} />
+              <div className="bg-blue-800 px-2 text-center rounded-sm">
+                <p>{d.y}</p>
+              </div>
               <p>{d.x}</p>
             </div>
           );
