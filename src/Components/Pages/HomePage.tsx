@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AiFillFire } from 'react-icons/ai';
+import { IoMdSearch } from "react-icons/io";
 import { Link, useNavigate } from 'react-router-dom';
 import { Pulse } from '../../Models/Pulse';
 import { useUserCredentials } from '../../Hooks/useUserCredentials';
@@ -8,6 +9,8 @@ import { useGetAllPulses } from '../../Hooks/useGetAllPulses';
 
 function HomePage() {
   const [pulses, setPulses] = useState<Pulse[]>([]);
+  const [filteredPulses, setFilteredPulses] = useState<Pulse[]>([]);
+  // const [tagFilter, setTagFilter] = useState<string>('');
   const [isLoggedIn, _] = useUserCredentials();
   const navigate = useNavigate();
   const getAllPulses = useGetAllPulses();
@@ -15,6 +18,7 @@ function HomePage() {
   const getPulses = async () => {
     const allPulses = await getAllPulses();
     setPulses(allPulses);
+    setFilteredPulses(allPulses);
   };
 
   useEffect(() => {
@@ -38,7 +42,7 @@ function HomePage() {
   const renderPulseContainer = () => {
     return (
       <div className="w-full flex-wrap px-10 flex flex-col items-center lg:flex-row lg:justify-center gap-8 lg:gap-40 text-center text-slate-100">
-        {pulses.map((pulse) => {
+        {filteredPulses.map((pulse) => {
           let tags = <></>;
           if (pulse.tags) {
             tags = (
@@ -71,8 +75,30 @@ function HomePage() {
     );
   };
 
+  const handleTagFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const currentFilter = e.target.value;
+    if (!currentFilter) {
+      setFilteredPulses(pulses);
+      return;
+    }
+
+    const filteredPulses = pulses.filter((p) => currentFilter.split(',').some((word) => word.trim() && p.tags.toLowerCase().includes(word.trim().toLowerCase())));
+    setFilteredPulses(filteredPulses);
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center text-white">
+      <div className="flex gap-2 items-center justify-center bg-slate-700 px-2 rounded-md">
+        <IoMdSearch className='text-2xl' />
+        <input
+          className="text-xl bg-transparent text-white py-1 rounded-md outline-none"
+          type="text"
+          placeholder="Search..."
+          onChange={handleTagFilterChange}
+        />
+      </div>
       {renderCreateButton()}
       <p className="mt-12 mb-12 text-3xl">
         Hot Pulses <AiFillFire className="inline text-red-500 pb-1" />
