@@ -7,7 +7,6 @@ import { usePulseColourGenerator } from "../../Hooks/usePulseColourGenerator";
 
 interface AddArgumentFormProps {
   pulse: Pulse;
-  parentArgumentId: string | null;
   reloadDiscussionData: () => void;
 }
 
@@ -33,7 +32,7 @@ export default function AddArgumentForm(props: AddArgumentFormProps) {
 
     const body: PostOpinionBody = {
       pulseId: props.pulse.id,
-      parentArgumentId: props.parentArgumentId,
+      parentArgumentId: null,
       opinionName: chosenOpinion,
       opinionBody: argumentValue,
     };
@@ -71,21 +70,21 @@ export default function AddArgumentForm(props: AddArgumentFormProps) {
 
   return (
     <form
-      className="mx-auto flex flex-col gap-2 my-12 max-w-4xl rounded-xl"
+      className="flex flex-col gap-2 max-w-4xl rounded-xl"
       onSubmit={addArgument}
     >
+      {renderOpinionButtons()}
       <textarea
-        className="bg-slate-900 text-white px-2 p-2 border-2 border-slate-500 rounded-xl overflow-hidden"
+        className="bg-slate-700 text-white px-2 p-2 rounded-md overflow-hidden outline-none resize-none"
         rows={1}
         placeholder="Give your opinion..."
         name="argument"
         onChange={handleChange}
         ref={textAreaRef}
       />
-      <div className="flex justify-between">
-        {renderOpinionButtons()}
+      <div className="flex justify-end">
         <button
-          className="bg-green-500 hover:bg-green-600 transition-colors text-white text-xl rounded-xl py-1 px-2"
+          className="bg-green-500 hover:bg-green-600 transition-colors text-white text-base rounded-xl py-1 px-2"
           type="submit"
         >
           Submit

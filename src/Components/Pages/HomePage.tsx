@@ -32,7 +32,7 @@ function HomePage() {
   const renderCreateButton = () => {
     if (isLoggedIn()) {
       return (
-        <button className="bg-blue-700 hover:bg-blue-900 px-4 py-2 rounded-lg text-xl" onClick={onCreateButtonClicked}>
+        <button className="bg-blue-700 hover:bg-blue-900 px-4 py-2 mb-12 rounded-lg text-xl" onClick={onCreateButtonClicked}>
           Create a Pulse
         </button>
       );
@@ -90,6 +90,7 @@ function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center text-white">
+      {renderCreateButton()}
       <div className="flex gap-2 items-center justify-center bg-slate-700 px-2 rounded-md">
         <IoMdSearch className='text-2xl' />
         <input
@@ -99,7 +100,6 @@ function HomePage() {
           onChange={handleTagFilterChange}
         />
       </div>
-      {renderCreateButton()}
       <p className="mt-12 mb-12 text-3xl">
         Hot Pulses <AiFillFire className="inline text-red-500 pb-1" />
       </p>

@@ -69,6 +69,7 @@ function CreatePulsePage() {
 
   const renderSelectableAnswers = () => {
     const deleteIsAllowed = selectableAnswers.length > 2;
+    const addIsAllowed = selectableAnswers.length < 4;
 
     return (
       <div>
@@ -77,7 +78,7 @@ function CreatePulsePage() {
           return (
             <div className="flex gap-2 items-center justify-between mt-4" key={i}>
               <input
-                className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl w-[92%]"
+                className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl w-[92%] outline-none"
                 type="text"
                 placeholder="Option"
                 onChange={(e) => handleSelectableAnswerChange(e, i)}
@@ -91,6 +92,11 @@ function CreatePulsePage() {
             </div>
           );
         })}
+        {addIsAllowed && (
+          <button className="text-slate-600 text-base font-semibold px-2 self-start mb-4" type="button" onClick={addSelectableAnswer}>
+            + Add Answer
+          </button>
+        )}
       </div>
     );
   };
@@ -103,7 +109,7 @@ function CreatePulsePage() {
     const newTags = [...tags];
     newTags[i] = tag;
     setTags(newTags);
-  }
+  };
 
   const removeTag = (i: number) => {
     let newTags = tags.filter((_, index) => index !== i);
@@ -111,21 +117,24 @@ function CreatePulsePage() {
   };
 
   const renderTags = () => {
-    if (tags.length == 0) return;
+    // if (tags.length == 0) return;
     return (
       <div>
-        <p className="text-xl text-slate-600 mb-2">Tags:</p>
+        <p className="text-xl text-slate-600 mb-2">Tags (optional):</p>
         <div className="flex gap-1 flex-wrap max-w-full">
           {tags.map((_, i) => {
             return <PulseTag index={i} setTagValueFunc={setTag} tagValue={tags[i]} deleteFunc={removeTag} key={i} />;
           })}
         </div>
+        <button className="text-slate-600 text-base font-semibold px-2 self-start mb-4" type="button" onClick={addTag}>
+          + Add Tag
+        </button>
       </div>
     );
   };
 
   const renderErrorText = () => {
-    if (validationErrors.length > 0)
+    if (false)
       return (
         <div className="text-base text-red-600">
           <p className="">Cannot submit Pulse</p>
@@ -161,20 +170,14 @@ function CreatePulsePage() {
           <p className="text-4xl">Create Pulse</p>
           <p className="text-xl text-slate-600">Create your own point of discussion for people to debate on!</p>
           <input
-            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
+            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl outline-none"
             type="text"
             placeholder="Title"
             name="title"
             onChange={handlePulseTitleChange}
           />
           {renderSelectableAnswers()}
-          <button className="text-slate-600 text-base font-semibold px-2 self-start mb-4" type="button" onClick={addSelectableAnswer}>
-            + Add Answer
-          </button>
           {renderTags()}
-          <button className="text-slate-600 text-base font-semibold px-2 self-start mb-4" type="button" onClick={addTag}>
-            + Add Tag
-          </button>
           {renderSubmitButton()}
           {renderErrorText()}
         </form>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MdOutlineRemoveCircle } from 'react-icons/md';
+import { TiDelete } from "react-icons/ti";
 
 interface PulseTagProps {
   index: number;
@@ -30,7 +30,7 @@ function PulseTag(props: PulseTagProps) {
   if (isEditMode) {
     return (
       <input
-        className="text-base text-slate-800 p-1 border-2 border-slate-300 rounded-xl"
+        className="bg-slate-600 text-base text-white px-2 p-1 rounded-sm outline-none"
         type="text"
         value={props.tagValue}
         placeholder="Tag..."
@@ -45,9 +45,9 @@ function PulseTag(props: PulseTagProps) {
       <div
         className="flex px-2 items-center"
       >
-        <p className="py-1 px-2 rounded-xl bg-blue-600 text-white text-base hover:cursor-pointer" onClick={handleOnClick}>{props.tagValue}</p>
-        <button className="text-red-600 text-base self-start" type="button" onClick={() => props.deleteFunc(props.index)}>
-          <MdOutlineRemoveCircle />
+        <p className="bg-slate-600 px-2 py-1 rounded-sm text-white text-base hover:cursor-pointer" onClick={handleOnClick}>{props.tagValue}</p>
+        <button className="text-red-600 text-lg self-start" type="button" onClick={() => props.deleteFunc(props.index)}>
+          <TiDelete />
         </button>
       </div>
     );
