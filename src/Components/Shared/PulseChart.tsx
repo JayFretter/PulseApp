@@ -1,6 +1,12 @@
-import { VictoryLabel, VictoryLegend, VictoryPie, VictoryPortal } from 'victory';
+import { VictoryPie } from 'victory';
 import { Pulse } from '../../Models/Pulse';
 import { usePulseColourGenerator } from '../../Hooks/usePulseColourGenerator';
+
+interface PulseChartData {
+  x: string;
+  y: number;
+  colour: string;
+}
 
 interface PulseChartProps {
   chartHeight: number;
@@ -11,8 +17,7 @@ function PulseChart(props: PulseChartProps) {
   const mapOpinionsToColours = usePulseColourGenerator();
 
   const getPulseChartData = (pulse: Pulse) => {
-    // TODO
-    const pieSlices: any[] = [];
+    const pieSlices: PulseChartData[] = [];
 
     let totalVotes = 0;
     pulse.opinions.forEach((o) => {

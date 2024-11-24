@@ -46,7 +46,6 @@ function ArgumentBlockFooter(props: ArgumentBlockFooterProps) {
             pulse={props.pulse}
             parentArgumentId={props.argument.id}
             reloadDiscussionData={() => {
-              console.log('TODO');
               setShowResponseForm(false);
             }}
             closeArgumentResponseForm={() => setShowResponseForm(false)}

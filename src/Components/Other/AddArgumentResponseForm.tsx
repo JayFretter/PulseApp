@@ -31,7 +31,7 @@ export default function AddArgumentResponseForm(props: AddArgumentResponseFormPr
     const body: PostOpinionBody = {
       pulseId: props.pulse.id,
       parentArgumentId: props.parentArgumentId,
-      opinionName: 'TODO',
+      opinionName: props.currentPulseVote,
       opinionBody: argumentValue,
     };
 
