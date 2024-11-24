@@ -8,6 +8,7 @@ import ArgumentBlockFooter from './ArgumentBlockFooter';
 interface DiscussionArgumentProps {
   argument: DiscussionArgument;
   pulse: Pulse;
+  currentPulseVote: string | null;
 }
 
 function ArgumentBlock(props: DiscussionArgumentProps) {
@@ -30,10 +31,16 @@ function ArgumentBlock(props: DiscussionArgumentProps) {
     <div className="bg-slate-800 px-3 py-3 flex flex-col border-l-2 border-blue-300 gap-2">
       <ArgumentBlockHeader pulse={props.pulse} argument={props.argument} />
       <p className="text-md text-left text-gray-100">{props.argument.argumentBody}</p>
-      <ArgumentBlockFooter pulse={props.pulse} argument={props.argument} fetchChildOpinions={fetchChildOpinions} showResponses={showResponses} />
+      <ArgumentBlockFooter
+        pulse={props.pulse}
+        argument={props.argument}
+        fetchChildOpinions={fetchChildOpinions}
+        showResponses={showResponses}
+        currentPulseVote={props.currentPulseVote}
+      />
       {showResponses &&
         children.map((argument, i) => {
-          return <ArgumentBlock argument={argument} pulse={props.pulse} key={i} />;
+          return <ArgumentBlock argument={argument} pulse={props.pulse} currentPulseVote={props.currentPulseVote} key={i} />;
         })}
     </div>
   );

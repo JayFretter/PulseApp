@@ -1,39 +1,32 @@
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { usePostLogin } from '../../Hooks/usePostLogin';
+import { PostLoginBody } from '../../Models/PostLoginBody';
 
 function LoginPage() {
   const [credentialsInvalid, setCredentialsInvalid] = useState(false);
   const [_, setCookie] = useCookies(['username', 'token']);
+  const postLogin = usePostLogin();
   const navigate = useNavigate();
 
-  const sendLogin = (e: React.FormEvent) => {
+  const sendLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    var body = {
+    var loginRequest: PostLoginBody = {
       username: (e.target as any).username.value,
       password: (e.target as any).password.value,
     };
 
-    const url = `${process.env.REACT_APP_API_BASE_URL}/users/login`;
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(body),
-    };
+    const loginResponse = await postLogin(loginRequest);
 
-    fetch(url, options)
-      .then((res) => {
-        if (res.status == 400) setCredentialsInvalid(true);
-        else if (res.status == 200) setCredentialsInvalid(false);
-
-        return res.json();
-      })
-      .then((data) => setCookies(data.username, data.token))
-      .catch((err) => console.error(err));
-  };
+    if (loginResponse) {
+      setCredentialsInvalid(false);
+      setCookies(loginResponse.username, loginResponse.token)
+    }
+    else
+      setCredentialsInvalid(true);
+  }
 
   const setCookies = (username: string, token: string) => {
     setCookie('username', username, { path: '/' });
@@ -52,13 +45,13 @@ function LoginPage() {
           <p className="text-4xl">Log in</p>
           <p className="text-xl text-slate-600">Log into your account to vote on other people's Pulses and create your own.</p>
           <input
-            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
+            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl outline-none"
             type="text"
             placeholder="Username"
             name="username"
           />
           <input
-            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
+            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl outline-none"
             type="password"
             placeholder="Password"
             name="password"

@@ -7,7 +7,7 @@ import { PostOpinionBody } from '../../Models/PostOpinionBody';
 interface AddArgumentResponseFormProps {
   pulse: Pulse;
   parentArgumentId: string;
-  currentVote: string;
+  currentPulseVote: string;
   reloadDiscussionData: () => void;
   closeArgumentResponseForm: () => void;
 }
@@ -52,7 +52,7 @@ export default function AddArgumentResponseForm(props: AddArgumentResponseFormPr
         ref={textAreaRef}
       />
       <div className="flex items-center justify-between">
-        <p className='text-slate-500 text-sm self-end'>Current vote: {props.currentVote}</p>
+        <p className='text-slate-500 text-sm self-end'>Arguing for "{props.currentPulseVote}"</p>
         <div className="flex gap-2">
           <button
             className="bg-slate-500 hover:bg-slate-400 transition-colors text-white text-base rounded-xl py-1 px-2"

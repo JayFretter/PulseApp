@@ -57,19 +57,19 @@ function SignUpPage() {
           <p className="text-4xl">Sign up</p>
           <p className="text-xl text-slate-600">Create account to vote on other people's Pulses and create your own.</p>
           <input
-            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
+            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl outline-none"
             type="text"
             placeholder="Username"
             name="username"
           />
           <input
-            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
+            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl outline-none"
             type="password"
             placeholder="Password"
             name="password"
           />
           <input
-            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl"
+            className="text-xl text-slate-800 px-2 py-1 border-2 border-slate-300 rounded-xl outline-none"
             type="password"
             placeholder="Confirm password"
             name="confirmPassword"

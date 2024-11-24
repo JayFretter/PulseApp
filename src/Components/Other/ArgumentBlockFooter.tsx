@@ -1,5 +1,6 @@
 import { DiscussionArgument } from '../../Models/Discussion';
 import { BiSolidMessageRounded } from 'react-icons/bi';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { Pulse } from '../../Models/Pulse';
 import { useState } from 'react';
 import { useUserCredentials } from '../../Hooks/useUserCredentials';
@@ -10,6 +11,7 @@ interface ArgumentBlockFooterProps {
   pulse: Pulse;
   fetchChildOpinions: () => Promise<void>;
   showResponses: boolean;
+  currentPulseVote: string | null;
 }
 
 function ArgumentBlockFooter(props: ArgumentBlockFooterProps) {
@@ -18,18 +20,27 @@ function ArgumentBlockFooter(props: ArgumentBlockFooterProps) {
 
   return (
     <div>
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-4">
         <button className="text-slate-500" onClick={props.fetchChildOpinions}>
-          {props.showResponses ? 'Hide responses' : 'Show responses'}
-        </button>
-        {isLoggedIn() && (
-          <div className="flex gap-2 items-center justify-center text-slate-500">
-            <BiSolidMessageRounded className="text-xl" />
-            <button onClick={() => setShowResponseForm(true)}>Respond</button>
+          <div className="flex gap-1 items-center justify-center text-slate-500">
+            {props.showResponses ? <FaAngleUp className="text-xl" /> : <FaAngleDown className="text-xl" />}
+            <p>{props.showResponses ? 'Hide responses' : 'Show responses'}</p>
           </div>
+        </button>
+        {isLoggedIn() && props.currentPulseVote && (
+          <button className="flex gap-1 items-center justify-center text-slate-500" onClick={() => setShowResponseForm(true)}>
+            <BiSolidMessageRounded className="text-lg" />
+            <p>Respond</p>
+          </button>
+        )}
+        {isLoggedIn() && !props.currentPulseVote && (
+          <button className="flex gap-1 items-center justify-center text-slate-500" onClick={() => setShowResponseForm(true)}>
+            <BiSolidMessageRounded className="text-lg" />
+            <p>Add a top-level argument to respond</p>
+          </button>
         )}
       </div>
-      {showResponseForm && (
+      {showResponseForm && props.currentPulseVote && (
         <div className="mt-2">
           <AddArgumentResponseForm
             pulse={props.pulse}
@@ -39,7 +50,7 @@ function ArgumentBlockFooter(props: ArgumentBlockFooterProps) {
               setShowResponseForm(false);
             }}
             closeArgumentResponseForm={() => setShowResponseForm(false)}
-            currentVote="TODO"
+            currentPulseVote={props.currentPulseVote}
           />
         </div>
       )}

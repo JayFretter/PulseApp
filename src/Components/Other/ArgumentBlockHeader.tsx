@@ -1,12 +1,14 @@
 import { DiscussionArgument } from '../../Models/Discussion';
 import { BsFillArrowUpCircleFill, BsFillArrowDownCircleFill } from 'react-icons/bs';
-import { MdDeleteForever } from 'react-icons/md';
+import { MdDeleteForever, MdOutlineMoreHoriz } from 'react-icons/md';
 import { Pulse } from '../../Models/Pulse';
-import { useCookies } from 'react-cookie';
 import { useState } from 'react';
 import { usePulseColourGenerator } from '../../Hooks/usePulseColourGenerator';
 import { useUserCredentials } from '../../Hooks/useUserCredentials';
 import { useDeleteArgument } from '../../Hooks/useDeleteArgument';
+import { usePostArgumentVote } from '../../Hooks/usePostArgumentVote';
+import { ArgumentVoteType } from '../../Models/ArgumentVoteType';
+import { useNavigate } from 'react-router-dom';
 
 interface ArgumentBlockHeaderProps {
   pulse: Pulse;
@@ -14,36 +16,31 @@ interface ArgumentBlockHeaderProps {
 }
 
 function ArgumentBlockHeader(props: ArgumentBlockHeaderProps) {
-  const [cookies] = useCookies(['token']);
   const [currentUserVote, setCurrentUserVote] = useState(0);
   const [showContextMenu, setShowContextMenu] = useState(false);
   const mapOpinionsToColours = usePulseColourGenerator();
   const [isLoggedIn, getUserCredentials] = useUserCredentials();
   const deleteArgument = useDeleteArgument();
+  const postArgumentVote = usePostArgumentVote()
+  const navigate = useNavigate();
 
-  const vote = (isUpvote: boolean) => {
-    let voteType = 0;
-
-    if (isUpvote) {
-      voteType = 1;
-      if (isLoggedIn()) setCurrentUserVote(1);
-    } else {
-      voteType = 2;
-      if (isLoggedIn()) setCurrentUserVote(-1);
+  const vote = async (isUpvote: boolean) => {
+    if (!isLoggedIn()) {
+      navigate('/login');
+      return;
     }
 
-    // TODO: factor out
-    const url = `${process.env.REACT_APP_API_BASE_URL}/discussions/arguments/${props.argument.id}/vote?voteType=${voteType}`;
-    const options = {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${cookies.token}`,
-      },
-    };
+    let voteType: ArgumentVoteType;
 
-    fetch(url, options)
-      .then((res) => res.json())
-      .catch((err) => console.error(err));
+    if (isUpvote) {
+      voteType = ArgumentVoteType.Upvote;
+      setCurrentUserVote(1);
+    } else {
+      voteType = ArgumentVoteType.Downvote;
+      setCurrentUserVote(-1);
+    }
+
+    await postArgumentVote(props.argument.id, voteType);
   };
 
   const getOpinionTagColour = () => {
@@ -97,7 +94,7 @@ function ArgumentBlockHeader(props: ArgumentBlockHeaderProps) {
           <BsFillArrowDownCircleFill />
         </button>
         <div className="relative hover:cursor-pointer" onClick={toggleContextMenu}>
-          ...
+          <MdOutlineMoreHoriz />
           {renderContextMenu()}
         </div>
       </div>

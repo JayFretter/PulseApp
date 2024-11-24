@@ -19,6 +19,8 @@ function CreatePulsePage() {
     if (pulseTitle == '') errors.push('Title cannot be empty');
     if (selectableAnswers.length < 2) errors.push('You must have at least two possible answers');
     if (selectableAnswers.some((a) => !a)) errors.push('All possible answers must have a name');
+    if (selectableAnswers.some((a1, i1) => selectableAnswers.some((a2, i2) => a1 === a2 && i1 !== i2)))
+      errors.push('All possible answers must be unique');
 
     setValidationErrors(errors);
   };
@@ -85,7 +87,7 @@ function CreatePulsePage() {
                 value={selectableAnswers[i]}
               ></input>
               {deleteIsAllowed && (
-                <button className="text-3xl text-red-600" type="button" onClick={() => removeSelectableAnswer(i)}>
+                <button className="text-2xl text-red-600" type="button" onClick={() => removeSelectableAnswer(i)}>
                   <MdOutlineRemoveCircle />
                 </button>
               )}
@@ -117,7 +119,6 @@ function CreatePulsePage() {
   };
 
   const renderTags = () => {
-    // if (tags.length == 0) return;
     return (
       <div>
         <p className="text-xl text-slate-600 mb-2">Tags (optional):</p>
