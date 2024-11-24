@@ -40,7 +40,7 @@ function ProfilePage() {
         <div className="flex flex-wrap gap-x-8 gap-y-8 justify-center max-w-7xl">
           {profile.pulses.map((pulse, i) => (
             <div className="bg-slate-800 p-4 rounded-xl flex flex-col gap-1 items-center justify-center" key={i}>
-              <p className="text-xl">{pulse.title}</p>
+              <p className="text-xl mb-4">{pulse.title}</p>
               <PulseChart chartHeight={280} pulse={pulse} />
               <button
                 className="text-base border-2 border-blue-500 hover:bg-blue-800 transition-colors px-3 py-1 rounded-xl"
