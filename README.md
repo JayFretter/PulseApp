@@ -5,7 +5,7 @@ Pulse is a social application that allows users to debate various topics by sele
 
 
 ## About
-Pulse is a social app designed to allow anyone and everyone to freely discuss and debate topics that are important to them. This is done by creating a new post (called a 'Pulse'), which must ask a question that can be answered with one of at two to four predefined options.
+Pulse is a social app designed to allow anyone and everyone to freely discuss and debate topics that are important to them. This is done by creating a new post (called a 'Pulse'), which must ask a question that can be answered with one of two to four predefined options.
 
 The idea is to encourage thoughtful and civil debate on topics.
 - For a user to add their vote, they must outline their reasons for picking their option.
