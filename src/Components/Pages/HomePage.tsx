@@ -89,14 +89,14 @@ function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center text-white">
+    <div className="min-h-screen pt-12 flex flex-col items-center text-white bg-gradient-to-b from-slate-900 to-slate-800">
       {renderCreateButton()}
       <div className="flex gap-2 items-center justify-center bg-slate-700 px-2 rounded-md">
         <IoMdSearch className='text-2xl' />
         <input
           className="text-xl bg-transparent text-white py-1 rounded-md outline-none"
           type="text"
-          placeholder="Search..."
+          placeholder="Search tags..."
           onChange={handleTagFilterChange}
         />
       </div>

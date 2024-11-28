@@ -1,4 +1,4 @@
-import { VictoryPie } from 'victory';
+import { VictoryLabel, VictoryPie, VictoryPortal } from 'victory';
 import { Pulse } from '../../Models/Pulse';
 import { usePulseColourGenerator } from '../../Hooks/usePulseColourGenerator';
 
@@ -11,6 +11,7 @@ interface PulseChartData {
 interface PulseChartProps {
   chartHeight: number;
   pulse: Pulse;
+  showLabels?: boolean;
 }
 
 function PulseChart(props: PulseChartProps) {
@@ -68,13 +69,19 @@ function PulseChart(props: PulseChartProps) {
         height={props.chartHeight}
         data={getPulseChartData(props.pulse)}
         style={{
+          labels: { fill: 'white' },
           data: {
             fill: (d) => d.datum.colour,
             stroke: 'white',
             strokeWidth: 2,
           },
         }}
-        labels={() => null}
+        labelComponent={
+          <VictoryPortal>
+            <VictoryLabel />
+          </VictoryPortal>
+        }
+        labels={(d) => props.showLabels ? d.datum.x : null}
       />
     </div>
   );

@@ -27,14 +27,14 @@ function PulseDetails(props: PulseDetailProps) {
 
   return (
     <div className="p-8 w-full">
-      <p className="text-md">
+      <h1 className="text-3xl mb-4">{props.pulse.title}</h1>
+      <p className="text-md mb-2">
         Posted by {props.pulse.createdBy.username},{" "}
         <span className="text-gray-400">{date.toLocaleString()}</span>
       </p>
-      <p className="mb-4 text-sm text-gray-400">{totalPulseVotes} votes</p>
-      <p className="text-xl mb-4">{props.pulse.title}</p>
+      <p className="text-sm text-gray-400 mb-12">{totalPulseVotes} votes</p>
       <div className="mx-auto max-w-[500px]">
-        <PulseChart chartHeight={340} pulse={props.pulse} />
+        <PulseChart chartHeight={340} pulse={props.pulse} showLabels />
       </div>
     </div>
   );

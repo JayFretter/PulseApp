@@ -35,7 +35,7 @@ function Navbar() {
   };
 
   return (
-    <div className="border-b-[1px] mb-12 border-slate-800 flex items-center justify-between px-8 h-[60px] text-white">
+    <div className="border-b-[1px] border-slate-800 flex items-center justify-between px-8 h-[60px] text-white">
       <Link
         to={`/`}
         className="font-semibold text-3xl tracking-wide hover:cursor-pointer"

@@ -92,7 +92,7 @@ export default function AddArgumentForm(props: AddArgumentFormProps) {
       <textarea
         className="bg-slate-700 text-white px-2 p-2 rounded-md overflow-hidden outline-none resize-none"
         rows={1}
-        placeholder="Give your opinion..."
+        placeholder="Give your reasoning..."
         name="argument"
         onChange={handleChange}
         ref={textAreaRef}
